@@ -11,7 +11,7 @@
         "filament-4",
         "pinpoint"
     ],
-    "homepage": "https://github.com/fahiem/filament-pinpoint",
+    "homepage": "https://github.com/fahiem152/filament-pinpoint",
     "license": "MIT",
     "authors": [
         {
@@ -48,6 +48,14 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php -r \"echo PHP_EOL . '⭐ Love Filament Pinpoint? Please give it a star: https://github.com/fahiem152/filament-pinpoint' . PHP_EOL . PHP_EOL;\""
+        ],
+        "post-update-cmd": [
+            "@php -r \"echo PHP_EOL . '⭐ Love Filament Pinpoint? Please give it a star: https://github.com/fahiem152/filament-pinpoint' . PHP_EOL . PHP_EOL;\""
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
