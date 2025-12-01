@@ -175,7 +175,7 @@ If you discover any security-related issues, please email amfahiem010502@gmail.c
 
 ## Credits
 
-- [Fahiem](https://github.com/fahiem)
+- [Fahiem](https://github.com/fahiem152)
 - [All Contributors](../../contributors)
 
 ## License
