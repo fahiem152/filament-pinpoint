@@ -20,7 +20,11 @@
         $latField = $getLatField();
         $lngField = $getLngField();
         $addressField = $getAddressField();
+        $provinceField = $getProvinceField();
         $villageField = $getVillageField();
+        $cityField = $getCityField();
+        $districtField = $getDistrictField();
+        $postalCodeField = $getPostalCodeField();
         $apiKey = $getApiKey();
 
         $state = $getState();
@@ -46,6 +50,10 @@
             latField: @js($latField),
             lngField: @js($lngField),
             addressField: @js($addressField),
+            provinceField: @js($provinceField),
+            cityField: @js($cityField),
+            districtField: @js($districtField),
+            postalCodeField: @js($postalCodeField),
             villageField: @js($villageField),
             isMapLoaded: false,
 
@@ -186,19 +194,63 @@
 
                         // Coba extract district/village dari address components
                         const components = results[0].address_components;
+                        let province = '';
+                        let city = '';
+                        let district = '';
                         let village = '';
+                        let postalCode = '';
 
                         components.forEach(component => {
+                            // Provinsi
+                            if (component.types.includes('administrative_area_level_1')) {
+                                province = component.long_name;
+                            }
+
+                            // Kota/Kabupaten
+                            if (component.types.includes('administrative_area_level_2')) {
+                                city = component.long_name;
+                            }
+
+                            // Kecamatan
+                            if (component.types.includes('administrative_area_level_3')) {
+                                district = component.long_name;
+                            }
+
                             // Desa/Kelurahan biasanya di administrative_area_level_4 atau sublocality
                             if (component.types.includes('administrative_area_level_4') ||
                                 component.types.includes('sublocality_level_1')) {
                                 village = component.long_name.replace(/^(Desa|Kelurahan)\s*/i, '');
                             }
+
+                            // Kode Pos
+                            if (component.types.includes('postal_code')) {
+                                postalCode = component.long_name;
+                            }
                         });
+
+                        // Update provinsi jika ditemukan dan field di-set
+                        if (province && this.provinceField) {
+                            $wire.set('data.' + this.provinceField, province);
+                        }
+                        
+                        // Update city jika ditemukan dan field di-set
+                        if (city && this.cityField) {
+                            $wire.set('data.' + this.cityField, city);
+                        }
+                        
+                        // Update district jika ditemukan dan field di-set
+                        if (district && this.districtField) {
+                            $wire.set('data.' + this.districtField, district);
+                        }
 
                         // Update village jika ditemukan dan field di-set
                         if (village && this.villageField) {
                             $wire.set('data.' + this.villageField, village);
+                        }
+
+                        // Update postalCode jika ditemukan dan field di-set
+                        if (postalCode && this.postalCodeField) {
+                            $wire.set('data.' + this.postalCodeField, postalCode);
                         }
                     }
                 });
@@ -274,11 +326,11 @@
                 type="button"
                 x-on:click="getCurrentLocation()"
                 x-show="isMapLoaded"
-                style="position: absolute; bottom: 16px; right: 16px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 10px; border: none; cursor: pointer;"
+                style="position: absolute; bottom: 75px; right: 10px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 10px; border: none; cursor: pointer;"
                 class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 title="Use my location"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;" class="text-primary-600 dark:text-primary-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 21px;" class="text-primary-600 dark:text-primary-400">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                 </svg>

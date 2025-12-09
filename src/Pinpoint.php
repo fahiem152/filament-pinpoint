@@ -40,7 +40,15 @@ class Pinpoint extends Field
 
     protected string|Closure|null $addressField = null;
 
+    protected string|Closure|null $provinceField = null;
+
+    protected string|Closure|null $cityField = null;
+
+    protected string|Closure|null $districtField = null;
+
     protected string|Closure|null $villageField = null;
+
+    protected string|Closure|null $postalCodeField = null;
 
     protected bool|Closure $draggable = true;
 
@@ -118,9 +126,37 @@ class Pinpoint extends Field
         return $this;
     }
 
+    public function provinceField(string|Closure|null $field): static
+    {
+        $this->provinceField = $field;
+
+        return $this;
+    }
+    
+    public function cityField(string|Closure|null $field): static
+    {
+        $this->cityField = $field;
+
+        return $this;
+    }
+    
+    public function districtField(string|Closure|null $field): static
+    {
+        $this->districtField = $field;
+
+        return $this;
+    }
+
     public function villageField(string|Closure|null $field): static
     {
         $this->villageField = $field;
+
+        return $this;
+    }
+
+    public function postalCodeField(string|Closure|null $field): static
+    {
+        $this->postalCodeField = $field;
 
         return $this;
     }
@@ -174,9 +210,29 @@ class Pinpoint extends Field
         return $this->evaluate($this->addressField);
     }
 
+    public function getProvinceField(): ?string
+    {
+        return $this->evaluate($this->provinceField);
+    }
+
+    public function getCityField(): ?string
+    {
+        return $this->evaluate($this->cityField);
+    }
+    
+    public function getDistrictField(): ?string
+    {
+        return $this->evaluate($this->districtField);
+    }
+
     public function getVillageField(): ?string
     {
         return $this->evaluate($this->villageField);
+    }
+
+    public function getPostalCodeField(): ?string
+    {
+        return $this->evaluate($this->postalCodeField);
     }
 
     public function isDraggable(): bool
