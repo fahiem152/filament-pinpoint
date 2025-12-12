@@ -125,7 +125,48 @@ Pinpoint::make('location')
     ->searchable(false) // Hide search box
 ```
 
+### Infolist Entry (Read-Only Display)
+
+For displaying locations in infolists (view mode), use the `PinpointEntry` component. It displays a clean, read-only Google Map with a marker at the specified coordinates.
+
+```php
+use Fahiem\FilamentPinpoint\PinpointEntry;
+
+public static function infolist(Infolist $infolist): Infolist
+{
+    return $infolist
+        ->schema([
+            PinpointEntry::make('location')
+                ->label('Location')
+                ->latField('lat')
+                ->lngField('lng')
+                ->columnSpanFull(),
+        ]);
+}
+```
+
+#### Customization Options
+
+```php
+PinpointEntry::make('location')
+    ->label('Business Location')
+    ->defaultLocation(-6.200000, 106.816666) // Jakarta
+    ->defaultZoom(15)
+    ->height(400)
+    ->latField('lat')
+    ->lngField('lng')
+    ->columnSpanFull()
+```
+
+The `PinpointEntry` displays:
+- A read-only Google Map with a marker at the specified coordinates
+- No text or address information - just a clean map view
+- Full dark mode support
+
+
 ## Available Methods
+
+### Pinpoint (Form Field)
 
 | Method | Description | Default |
 |--------|-------------|---------|
@@ -142,6 +183,19 @@ Pinpoint::make('location')
 | `postalCodeField(string $field)` | Field name for auto-fill postal/zip code | `null` |
 | `draggable(bool $draggable)` | Enable/disable marker dragging | `true` |
 | `searchable(bool $searchable)` | Enable/disable search box | `true` |
+
+### PinpointEntry (Infolist Entry)
+
+| Method | Description | Default |
+|--------|-------------|---------|
+| `defaultLocation(float $lat, float $lng)` | Set default center location | `-0.5050, 117.1500` |
+| `defaultZoom(int $zoom)` | Set default zoom level | `13` |
+| `height(int $height)` | Set map height in pixels | `400` |
+| `latField(string $field)` | Field name for latitude | `'lat'` |
+| `lngField(string $field)` | Field name for longitude | `'lng'` |
+| `getLat()` | Get latitude from record | Returns field value or default |
+| `getLng()` | Get longitude from record | Returns field value or default |
+
 
 ## Getting a Google Maps API Key
 
