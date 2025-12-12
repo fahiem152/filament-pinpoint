@@ -172,7 +172,7 @@
                     $wire.set('data.' + this.lngField, this.lng);
                 }
 
-                // Reverse geocoding untuk dapat alamat
+                // Reverse geocoding to get address
                 this.reverseGeocode(lat, lng);
             },
 
@@ -184,15 +184,15 @@
                     if (status === 'OK' && results[0]) {
                         const address = results[0].formatted_address;
 
-                        // Update address variable (untuk x-model)
+                        // Update address variable (for x-model)
                         this.address = address;
 
-                        // Update alamat field jika di-set
+                        // Update field address if set
                         if (this.addressField) {
                             $wire.set('data.' + this.addressField, address);
                         }
 
-                        // Coba extract district/village dari address components
+                        // Extract address components
                         const components = results[0].address_components;
                         let province = '';
                         let city = '';
@@ -201,56 +201,56 @@
                         let postalCode = '';
 
                         components.forEach(component => {
-                            // Provinsi
+                            // Province
                             if (component.types.includes('administrative_area_level_1')) {
                                 province = component.long_name;
                             }
 
-                            // Kota/Kabupaten
+                            // City/County
                             if (component.types.includes('administrative_area_level_2')) {
                                 city = component.long_name;
                             }
 
-                            // Kecamatan
+                            // District
                             if (component.types.includes('administrative_area_level_3')) {
                                 district = component.long_name;
                             }
 
-                            // Desa/Kelurahan biasanya di administrative_area_level_4 atau sublocality
+                            // Villages/Sub-districts are usually at administrative_area_level_4 or sublocality
                             if (component.types.includes('administrative_area_level_4') ||
                                 component.types.includes('sublocality_level_1')) {
                                 village = component.long_name.replace(/^(Desa|Kelurahan)\s*/i, '');
                             }
 
-                            // Kode Pos
+                            // Postal code/Zip code
                             if (component.types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
                         });
 
-                        // Update provinsi jika ditemukan dan field di-set
+                        // Update province if found and field is set
                         if (province && this.provinceField) {
-                            $wire.set('data.' + this.provinceField, province);
+                            $wire.set('data.' + this.provinceField, province || null);
                         }
                         
-                        // Update city jika ditemukan dan field di-set
+                        // Update city if found and field is set
                         if (city && this.cityField) {
-                            $wire.set('data.' + this.cityField, city);
+                            $wire.set('data.' + this.cityField, city || null);
                         }
                         
-                        // Update district jika ditemukan dan field di-set
+                        // Update district if found and field is set
                         if (district && this.districtField) {
-                            $wire.set('data.' + this.districtField, district);
+                            $wire.set('data.' + this.districtField, district || null);
                         }
 
-                        // Update village jika ditemukan dan field di-set
+                        // Update village if found and field is set
                         if (village && this.villageField) {
-                            $wire.set('data.' + this.villageField, village);
+                            $wire.set('data.' + this.villageField, village || null);
                         }
 
-                        // Update postalCode jika ditemukan dan field di-set
+                        // Update postalCode if found and field is set
                         if (postalCode && this.postalCodeField) {
-                            $wire.set('data.' + this.postalCodeField, postalCode);
+                            $wire.set('data.' + this.postalCodeField, postalCode || null);
                         }
                     }
                 });
