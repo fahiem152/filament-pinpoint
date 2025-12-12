@@ -297,8 +297,8 @@
                     x-ref="searchInput"
                     x-model="address"
                     placeholder="Search for a location..."
-                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none;"
-                    class="border bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none; border: 1px solid #d1d5db;"
+                    class="bg-white dark:bg-gray-900 dark:!border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:!border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                 />
             </div>
         @endif

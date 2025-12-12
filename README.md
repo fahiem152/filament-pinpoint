@@ -6,7 +6,7 @@
 
 📍 A Google Maps location picker component for **Filament 4** with search, draggable marker, and reverse geocoding support.
 
-![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-2.png)
 
 ## Features
 

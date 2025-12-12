@@ -2,6 +2,33 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.0 - 2025-12-12
+
+### Added
+
+- New address component fields for reverse geocoding:
+  - `provinceField()` - Auto-fill province/state (administrative_area_level_1)
+  - `cityField()` - Auto-fill city/county (administrative_area_level_2)
+  - `districtField()` - Auto-fill district (administrative_area_level_3)
+  - `postalCodeField()` - Auto-fill postal/zip code
+- Improved search input styling with visible border
+
+### Fixed
+
+- Address component fields now always update when location changes
+- Fields are set to `null` when Google Maps API returns no data, preventing stale data from persisting
+- Search input border now displays correctly in both light and dark modes
+
+### Changed
+
+- Relocated current location button position for better UX
+- Updated button styling (border-radius changed to 20px)
+
+### Contributors
+
+- Thanks to [@SalmanAlmajali](https://github.com/SalmanAlmajali) for the address components feature (PR #1)
+- Thanks to [@ismailalterweb](https://github.com/ismailalterweb) for the null handling feedback
+
 ## v1.0.3 - 2025-12-04
 
 ### Fixed
