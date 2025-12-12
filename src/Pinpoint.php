@@ -40,6 +40,8 @@ class Pinpoint extends Field
 
     protected string|Closure|null $addressField = null;
 
+    protected string|Closure|null $shortAddressField = null;
+
     protected string|Closure|null $provinceField = null;
 
     protected string|Closure|null $cityField = null;
@@ -49,6 +51,8 @@ class Pinpoint extends Field
     protected string|Closure|null $villageField = null;
 
     protected string|Closure|null $postalCodeField = null;
+
+    protected string|Closure|null $countryField = null;
 
     protected bool|Closure $draggable = true;
 
@@ -126,6 +130,13 @@ class Pinpoint extends Field
         return $this;
     }
 
+    public function shortAddressField(string|Closure|null $field): static
+    {
+        $this->shortAddressField = $field;
+
+        return $this;
+    }
+
     public function provinceField(string|Closure|null $field): static
     {
         $this->provinceField = $field;
@@ -157,6 +168,13 @@ class Pinpoint extends Field
     public function postalCodeField(string|Closure|null $field): static
     {
         $this->postalCodeField = $field;
+
+        return $this;
+    }
+
+    public function countryField(string|Closure|null $field): static
+    {
+        $this->countryField = $field;
 
         return $this;
     }
@@ -210,6 +228,11 @@ class Pinpoint extends Field
         return $this->evaluate($this->addressField);
     }
 
+    public function getShortAddressField(): ?string
+    {
+        return $this->evaluate($this->shortAddressField);
+    }
+
     public function getProvinceField(): ?string
     {
         return $this->evaluate($this->provinceField);
@@ -233,6 +256,11 @@ class Pinpoint extends Field
     public function getPostalCodeField(): ?string
     {
         return $this->evaluate($this->postalCodeField);
+    }
+
+    public function getCountryField(): ?string
+    {
+        return $this->evaluate($this->countryField);
     }
 
     public function isDraggable(): bool

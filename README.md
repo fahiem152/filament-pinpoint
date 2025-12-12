@@ -108,12 +108,14 @@ Pinpoint::make('location')
     ->searchable()
     ->latField('lat')
     ->lngField('lng')
-    ->addressField('address')           // Auto-fill address field
-    ->provinceField('province')         // Auto-fill province field
-    ->cityField('city')                 // Auto-fill city/county field
-    ->districtField('district')         // Auto-fill district field
-    ->villageField('village')           // Auto-fill village/district field
-    ->postalCodeField('postal_code')    // Auto-fill postal/zip code field
+    ->addressField('address')            // Auto-fill address field
+    ->shortAddressField('short_address') // Auto-fill short address field (exclude province, city, district, village, and postal code)
+    ->provinceField('province')          // Auto-fill province field
+    ->cityField('city')                  // Auto-fill city/county field
+    ->districtField('district')          // Auto-fill district field
+    ->villageField('village')            // Auto-fill village/district field
+    ->postalCodeField('postal_code')     // Auto-fill postal/zip code field
+    ->countryField('country')            // Auto-fill country field
     ->columnSpanFull()
 ```
 
@@ -135,11 +137,13 @@ Pinpoint::make('location')
 | `latField(string $field)` | Field name for latitude | `'lat'` |
 | `lngField(string $field)` | Field name for longitude | `'lng'` |
 | `addressField(string $field)` | Field name for auto-fill address | `null` |
+| `shortAddressField(string $field)` | Field name for auto-fill short address | `null` |
 | `provinceField(string $field)` | Field name for auto-fill province | `null` |
 | `cityField(string $field)` | Field name for auto-fill city/county | `null` |
 | `districtField(string $field)` | Field name for auto-fill district | `null` |
 | `villageField(string $field)` | Field name for auto-fill village/sub-district | `null` |
 | `postalCodeField(string $field)` | Field name for auto-fill postal/zip code | `null` |
+| `countryField(string $field)` | Field name for auto-fill country | `null` |
 | `draggable(bool $draggable)` | Enable/disable marker dragging | `true` |
 | `searchable(bool $searchable)` | Enable/disable search box | `true` |
 
@@ -165,11 +169,13 @@ Schema::create('locations', function (Blueprint $table) {
     $table->decimal('lat', 10, 7)->nullable();
     $table->decimal('lng', 10, 7)->nullable();
     $table->text('address')->nullable();
+    $table->text('short_address')->nullable();
     $table->string('province')->nullable();
     $table->string('city')->nullable();
     $table->string('district')->nullable();
     $table->string('village')->nullable();
     $table->string('postal_code')->nullable();
+    $table->string('country')->nullable();
     $table->timestamps();
 });
 ```

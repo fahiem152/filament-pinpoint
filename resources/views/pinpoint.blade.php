@@ -20,11 +20,13 @@
         $latField = $getLatField();
         $lngField = $getLngField();
         $addressField = $getAddressField();
+        $shortAddressField = $getShortAddressField();
         $provinceField = $getProvinceField();
         $villageField = $getVillageField();
         $cityField = $getCityField();
         $districtField = $getDistrictField();
         $postalCodeField = $getPostalCodeField();
+        $countryField = $getCountryField();
         $apiKey = $getApiKey();
 
         $state = $getState();
@@ -50,10 +52,12 @@
             latField: @js($latField),
             lngField: @js($lngField),
             addressField: @js($addressField),
+            shortAddressField: @js($shortAddressField),
             provinceField: @js($provinceField),
             cityField: @js($cityField),
             districtField: @js($districtField),
             postalCodeField: @js($postalCodeField),
+            countryField: @js($countryField),
             villageField: @js($villageField),
             isMapLoaded: false,
 
@@ -194,13 +198,38 @@
 
                         // Extract address components
                         const components = results[0].address_components;
+                        let subpremise = '';
+                        let premise = '';
+                        let streetNumber = '';
+                        let route = '';
                         let province = '';
                         let city = '';
                         let district = '';
                         let village = '';
                         let postalCode = '';
+                        let country = '';
 
                         components.forEach(component => {
+                            // Street Number
+                            if (component.types.includes('street_number')) {
+                                streetNumber = component.long_name;
+                            }
+
+                            // Subpremise
+                            if (component.types.includes('subpremise')) {
+                                subpremise = component.long_name;
+                            }
+
+                            // Premise
+                            if (component.types.includes('premise')) {
+                                premise = component.long_name;
+                            }
+
+                            // Route
+                            if (component.types.includes('route')) {
+                                route = component.long_name;
+                            }
+
                             // Province
                             if (component.types.includes('administrative_area_level_1')) {
                                 province = component.long_name;
@@ -226,7 +255,33 @@
                             if (component.types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
+                            
+                            // Country
+                            if (component.types.includes('country')) {
+                                country = component.long_name;
+                            }
                         });
+
+                        // Build short address
+                        let shortAddress = '';
+                        if (subpremise) {
+                            shortAddress += subpremise + ', ';
+                        }
+                        if (premise) {
+                            shortAddress += premise + ', ';
+                        }
+                        if (route && streetNumber) {
+                            shortAddress += `${route} ${streetNumber}`;
+                        } else if (route) {
+                            shortAddress += route;
+                        } else if (streetNumber) {
+                            shortAddress += streetNumber;
+                        }
+
+                        // Update short address
+                        if (this.shortAddressField) {
+                            $wire.set('data.' + this.shortAddressField, shortAddress || null);
+                        }
 
                         // Update province - set null if API returns no data
                         if (this.provinceField) {
@@ -251,6 +306,11 @@
                         // Update postalCode - set null if API returns no data
                         if (this.postalCodeField) {
                             $wire.set('data.' + this.postalCodeField, postalCode || null);
+                        }
+
+                        // Update country - set null if API returns no data
+                        if (this.countryField) {
+                            $wire.set('data.' + this.countryField, country || null);
                         }
                     }
                 });
@@ -296,7 +356,7 @@
                     type="text"
                     x-ref="searchInput"
                     x-model="address"
-                    placeholder="Search for a location..."
+                    placeholder="{{ __('Search for a location...') }}"
                     style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none; border: 1px solid #d1d5db;"
                     class="bg-white dark:bg-gray-900 dark:!border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:!border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                 />
@@ -316,7 +376,7 @@
                             <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span>Loading map...</span>
+                        <span>{{ __('Loading map...') }}</span>
                     </div>
                 </div>
             </div>
@@ -328,7 +388,7 @@
                 x-show="isMapLoaded"
                 style="position: absolute; bottom: 75px; right: 10px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 10px; border: none; cursor: pointer;"
                 class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                title="Use my location"
+                title="{{ __('Use my location') }}"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 21px;" class="text-primary-600 dark:text-primary-400">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -343,7 +403,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
-                <span>Click on the map or drag the marker to set the location. Use the search box to find an address.</span>
+                <span>{{ __('Click on the map or drag the marker to set the location. Use the search box to find an address.') }}</span>
             </p>
         @endif
 
