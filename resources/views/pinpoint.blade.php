@@ -228,28 +228,28 @@
                             }
                         });
 
-                        // Update province if found and field is set
-                        if (province && this.provinceField) {
+                        // Update province - set null if API returns no data
+                        if (this.provinceField) {
                             $wire.set('data.' + this.provinceField, province || null);
                         }
-                        
-                        // Update city if found and field is set
-                        if (city && this.cityField) {
+
+                        // Update city - set null if API returns no data
+                        if (this.cityField) {
                             $wire.set('data.' + this.cityField, city || null);
                         }
-                        
-                        // Update district if found and field is set
-                        if (district && this.districtField) {
+
+                        // Update district - set null if API returns no data
+                        if (this.districtField) {
                             $wire.set('data.' + this.districtField, district || null);
                         }
 
-                        // Update village if found and field is set
-                        if (village && this.villageField) {
+                        // Update village - set null if API returns no data
+                        if (this.villageField) {
                             $wire.set('data.' + this.villageField, village || null);
                         }
 
-                        // Update postalCode if found and field is set
-                        if (postalCode && this.postalCodeField) {
+                        // Update postalCode - set null if API returns no data
+                        if (this.postalCodeField) {
                             $wire.set('data.' + this.postalCodeField, postalCode || null);
                         }
                     }
