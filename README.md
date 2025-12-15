@@ -6,7 +6,9 @@
 
 📍 A Google Maps location picker component for **Filament 4** with search, draggable marker, and reverse geocoding support.
 
-![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-2.png)
+![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-3.png)
+
+![Infolist View](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-3-viewer.png)
 
 ## Features
 
@@ -16,6 +18,7 @@
 - 📱 **Current location** - Get user's current device location
 - 🏠 **Reverse geocoding** - Auto-fill address fields from coordinates
 - 🌙 **Dark mode support** - Fully compatible with Filament's dark mode
+- 🌐 **Multi-language support** - Translations for EN, AR, NL, ID
 - ⚙️ **Fully configurable** - Customize height, zoom, default location, and more
 
 ## Requirements
@@ -232,6 +235,42 @@ Schema::create('locations', function (Blueprint $table) {
     $table->string('country')->nullable();
     $table->timestamps();
 });
+```
+
+## Translations
+
+This package supports multiple languages out of the box:
+
+| Language | Code |
+|----------|------|
+| English | `en` |
+| Arabic | `ar` |
+| Dutch | `nl` |
+| Indonesian | `id` |
+
+### Publishing Translations
+
+To customize the translations, publish them to your application:
+
+```bash
+php artisan vendor:publish --tag="filament-pinpoint-translations"
+```
+
+This will publish the translation files to `lang/vendor/filament-pinpoint/`.
+
+### Adding New Languages
+
+Create a new folder in `lang/vendor/filament-pinpoint/{locale}/` with a `pinpoint.php` file:
+
+```php
+<?php
+
+return [
+    'search' => 'Your translation...',
+    'use_my_location' => 'Your translation...',
+    'instructions' => 'Your translation...',
+    'loading_map' => 'Your translation...',
+];
 ```
 
 ## Changelog

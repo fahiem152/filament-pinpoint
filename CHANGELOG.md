@@ -2,6 +2,32 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.1 - 2025-12-15
+
+### Added
+
+- 🌐 **Multi-language support** with translation files:
+  - English (en)
+  - Arabic (ar) - العربية
+  - Dutch (nl) - Nederlands
+  - Indonesian (id)
+- New address component fields:
+  - `shortAddressField()` - Auto-fill short address (premise + route + street number)
+  - `countryField()` - Auto-fill country name
+- `PinpointEntry` component for Infolists (read-only map display)
+
+### Fixed
+
+- Translation strings now use proper Laravel package namespace (`filament-pinpoint::pinpoint.*`)
+- Restored missing translation files that were accidentally removed
+
+### Contributors
+
+- Thanks to [@ismailalterweb](https://github.com/ismailalterweb) for:
+  - Short address & country fields (PR #2)
+  - PinpointEntry infolist component (PR #3)
+  - Translation support
+
 ## v1.1.0 - 2025-12-12
 
 ### Added
