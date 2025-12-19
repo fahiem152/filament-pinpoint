@@ -49,6 +49,7 @@
             defaultZoom: @js($defaultZoom),
             isDraggable: @js($isDraggable),
             isSearchable: @js($isSearchable),
+            statePath: @js($statePath),
             latField: @js($latField),
             lngField: @js($lngField),
             addressField: @js($addressField),
@@ -61,8 +62,41 @@
             villageField: @js($villageField),
             isMapLoaded: false,
 
+            getFieldPath(fieldName) {
+                if (!fieldName) return null;
+                // Get parent path from statePath (e.g., 'data.items.0.location' -> 'data.items.0')
+                const lastDotIndex = this.statePath.lastIndexOf('.');
+                const basePath = lastDotIndex > -1 ? this.statePath.substring(0, lastDotIndex + 1) : 'data.';
+                return basePath + fieldName;
+            },
+
             init() {
+                // Try to read existing lat/lng from sibling fields (for edit mode / Repeater support)
+                this.loadExistingCoordinates();
                 this.loadGoogleMaps();
+            },
+
+            loadExistingCoordinates() {
+                const latPath = this.getFieldPath(this.latField);
+                const lngPath = this.getFieldPath(this.lngField);
+                const addressPath = this.getFieldPath(this.addressField);
+
+                if (latPath && lngPath) {
+                    const existingLat = $wire.get(latPath);
+                    const existingLng = $wire.get(lngPath);
+
+                    if (existingLat && existingLng) {
+                        this.lat = parseFloat(existingLat);
+                        this.lng = parseFloat(existingLng);
+                    }
+                }
+
+                if (addressPath) {
+                    const existingAddress = $wire.get(addressPath);
+                    if (existingAddress) {
+                        this.address = existingAddress;
+                    }
+                }
             },
 
             loadGoogleMaps() {
@@ -168,12 +202,15 @@
                 this.lat = parseFloat(lat.toFixed(7));
                 this.lng = parseFloat(lng.toFixed(7));
 
-                // Set ke form data Filament (data.fieldName)
-                if (this.latField) {
-                    $wire.set('data.' + this.latField, this.lat);
+                // Set ke form data Filament using dynamic path (supports Repeater)
+                const latPath = this.getFieldPath(this.latField);
+                const lngPath = this.getFieldPath(this.lngField);
+
+                if (latPath) {
+                    $wire.set(latPath, this.lat);
                 }
-                if (this.lngField) {
-                    $wire.set('data.' + this.lngField, this.lng);
+                if (lngPath) {
+                    $wire.set(lngPath, this.lng);
                 }
 
                 // Reverse geocoding to get address
@@ -191,9 +228,10 @@
                         // Update address variable (for x-model)
                         this.address = address;
 
-                        // Update field address if set
-                        if (this.addressField) {
-                            $wire.set('data.' + this.addressField, address);
+                        // Update field address if set (supports Repeater)
+                        const addressPath = this.getFieldPath(this.addressField);
+                        if (addressPath) {
+                            $wire.set(addressPath, address);
                         }
 
                         // Extract address components
@@ -278,39 +316,46 @@
                             shortAddress += streetNumber;
                         }
 
-                        // Update short address
-                        if (this.shortAddressField) {
-                            $wire.set('data.' + this.shortAddressField, shortAddress || null);
+                        // Update short address (supports Repeater)
+                        const shortAddressPath = this.getFieldPath(this.shortAddressField);
+                        if (shortAddressPath) {
+                            $wire.set(shortAddressPath, shortAddress || null);
                         }
 
-                        // Update province - set null if API returns no data
-                        if (this.provinceField) {
-                            $wire.set('data.' + this.provinceField, province || null);
+                        // Update province (supports Repeater)
+                        const provincePath = this.getFieldPath(this.provinceField);
+                        if (provincePath) {
+                            $wire.set(provincePath, province || null);
                         }
 
-                        // Update city - set null if API returns no data
-                        if (this.cityField) {
-                            $wire.set('data.' + this.cityField, city || null);
+                        // Update city (supports Repeater)
+                        const cityPath = this.getFieldPath(this.cityField);
+                        if (cityPath) {
+                            $wire.set(cityPath, city || null);
                         }
 
-                        // Update district - set null if API returns no data
-                        if (this.districtField) {
-                            $wire.set('data.' + this.districtField, district || null);
+                        // Update district (supports Repeater)
+                        const districtPath = this.getFieldPath(this.districtField);
+                        if (districtPath) {
+                            $wire.set(districtPath, district || null);
                         }
 
-                        // Update village - set null if API returns no data
-                        if (this.villageField) {
-                            $wire.set('data.' + this.villageField, village || null);
+                        // Update village (supports Repeater)
+                        const villagePath = this.getFieldPath(this.villageField);
+                        if (villagePath) {
+                            $wire.set(villagePath, village || null);
                         }
 
-                        // Update postalCode - set null if API returns no data
-                        if (this.postalCodeField) {
-                            $wire.set('data.' + this.postalCodeField, postalCode || null);
+                        // Update postalCode (supports Repeater)
+                        const postalCodePath = this.getFieldPath(this.postalCodeField);
+                        if (postalCodePath) {
+                            $wire.set(postalCodePath, postalCode || null);
                         }
 
-                        // Update country - set null if API returns no data
-                        if (this.countryField) {
-                            $wire.set('data.' + this.countryField, country || null);
+                        // Update country (supports Repeater)
+                        const countryPath = this.getFieldPath(this.countryField);
+                        if (countryPath) {
+                            $wire.set(countryPath, country || null);
                         }
                     }
                 });
