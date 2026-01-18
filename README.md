@@ -16,6 +16,7 @@
 - 📍 **Click to set marker** - Click anywhere on the map to place a marker
 - ✋ **Draggable marker** - Drag the marker to fine-tune the location
 - 📱 **Current location** - Get user's current device location
+- ⭕ **Radius support** - Display and edit radius around the location
 - 🏠 **Reverse geocoding** - Auto-fill address fields from coordinates
 - 🌙 **Dark mode support** - Fully compatible with Filament's dark mode
 - 🌐 **Multi-language support** - Translations for EN, AR, NL, ID
@@ -129,8 +130,22 @@ Pinpoint::make('location')
     ->villageField('village')            // Auto-fill village/district field
     ->postalCodeField('postal_code')     // Auto-fill postal/zip code field
     ->countryField('country')            // Auto-fill country field
+    ->radiusField('radius')             // Auto-fill radius field (in meters)
+    ->defaultRadius(1000)               // Default radius in meters
     ->columnSpanFull()
 ```
+
+### Radius Support
+
+You can enable radius support by using `radiusField()`:
+
+```php
+Pinpoint::make('location')
+    ->radiusField('radius') // 'radius' is the column name in your database
+    ->defaultRadius(500)    // Default 500 meters
+```
+
+When `radiusField` is configured, an interactive circle will appear on the map. You can change the radius by dragging the circle's edges, and the value will be automatically saved to your database field.
 
 ### Disable Features
 
@@ -311,6 +326,8 @@ The `PinpointEntry` displays:
 | `villageField(string $field)` | Field name for auto-fill village/sub-district | `null` |
 | `postalCodeField(string $field)` | Field name for auto-fill postal/zip code | `null` |
 | `countryField(string $field)` | Field name for auto-fill country | `null` |
+| `radiusField(string $field)` | Field name for auto-fill radius | `null` |
+| `defaultRadius(int $radius)` | Set default radius in meters | `500` |
 | `draggable(bool $draggable)` | Enable/disable marker dragging | `true` |
 | `searchable(bool $searchable)` | Enable/disable search box | `true` |
 
@@ -323,6 +340,7 @@ The `PinpointEntry` displays:
 | `height(int $height)` | Set map height in pixels | `400` |
 | `latField(string $field)` | Field name for latitude | `'lat'` |
 | `lngField(string $field)` | Field name for longitude | `'lng'` |
+| `radiusField(string $field)` | Field name for radius | `null` |
 | `pins(array $pins)` | Set array of multiple markers with lat, lng, label, color, icon, info | `null` |
 | `fitBounds(bool $fit)` | Auto-zoom map to show all markers | `true` |
 | `getLat()` | Get latitude from record | Returns field value or default |
