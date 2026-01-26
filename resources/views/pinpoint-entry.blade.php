@@ -12,6 +12,7 @@
         $height = $getHeight();
         $lat = $getLat();
         $lng = $getLng();
+        $radius = $getRadius();
         $apiKey = $getApiKey();
         $pins = $getPins();
         $hasPins = $hasPins();
@@ -22,9 +23,11 @@
         x-data="{
             map: null,
             marker: null,
+            circle: null,
             markers: [],
             lat: parseFloat(@js($lat)) || @js($defaultLat),
             lng: parseFloat(@js($lng)) || @js($defaultLng),
+            radius: parseFloat(@js($radius)) || null,
             defaultZoom: @js($defaultZoom),
             pins: @js($pins ?? []),
             hasPins: @js($hasPins),
@@ -115,6 +118,21 @@
                     draggable: false,
                     animation: google.maps.Animation.DROP,
                 });
+
+                if (this.radius) {
+                    this.circle = new google.maps.Circle({
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.35,
+                        map: this.map,
+                        center: { lat: this.lat, lng: this.lng },
+                        radius: this.radius,
+                        editable: false,
+                        draggable: false
+                    });
+                }
             },
 
             initMultipleMarkers() {

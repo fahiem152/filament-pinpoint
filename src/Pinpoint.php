@@ -34,9 +34,13 @@ class Pinpoint extends Field
 
     protected int|Closure|null $height = null;
 
+    protected int|Closure|null $defaultRadius = null;
+
     protected string|Closure|null $latField = 'lat';
 
     protected string|Closure|null $lngField = 'lng';
+    
+    protected string|Closure|null $radiusField = null;
 
     protected string|Closure|null $addressField = null;
 
@@ -66,16 +70,21 @@ class Pinpoint extends Field
             if ($record) {
                 $latField = $component->getLatField();
                 $lngField = $component->getLngField();
+                $radiusField = $component->getRadiusField();
                 $addressField = $component->getAddressField();
 
                 $state = [
-                    'lat' => $record->{$latField} ?? $component->getDefaultLat(),
-                    'lng' => $record->{$lngField} ?? $component->getDefaultLng(),
+                    'lat' => data_get($record, $latField) ?? $component->getDefaultLat(),
+                    'lng' => data_get($record, $lngField) ?? $component->getDefaultLng(),
                 ];
 
+                if ($radiusField && ($radius = data_get($record, $radiusField))) {
+                    $state['radius'] = $radius;
+                }
+
                 // Tambahkan address ke state jika field dikonfigurasi
-                if ($addressField && isset($record->{$addressField})) {
-                    $state['address'] = $record->{$addressField};
+                if ($addressField && ($address = data_get($record, $addressField))) {
+                    $state['address'] = $address;
                 }
 
                 $component->state($state);
@@ -109,6 +118,13 @@ class Pinpoint extends Field
         return $this;
     }
 
+    public function defaultRadius(int|Closure|null $radius): static
+    {
+        $this->defaultRadius = $radius;
+
+        return $this;
+    }
+
     public function latField(string|Closure|null $field): static
     {
         $this->latField = $field;
@@ -119,6 +135,13 @@ class Pinpoint extends Field
     public function lngField(string|Closure|null $field): static
     {
         $this->lngField = $field;
+
+        return $this;
+    }
+
+    public function radiusField(string|Closure|null $field): static
+    {
+        $this->radiusField = $field;
 
         return $this;
     }
@@ -213,6 +236,11 @@ class Pinpoint extends Field
         return $this->evaluate($this->height) ?? config('filament-pinpoint.default.height', 400);
     }
 
+    public function getDefaultRadius(): ?int
+    {
+        return $this->evaluate($this->defaultRadius) ?? config('filament-pinpoint.default.radius', 500);
+    }
+
     public function getLatField(): ?string
     {
         return $this->evaluate($this->latField);
@@ -221,6 +249,11 @@ class Pinpoint extends Field
     public function getLngField(): ?string
     {
         return $this->evaluate($this->lngField);
+    }
+
+    public function getRadiusField(): ?string
+    {
+        return $this->evaluate($this->radiusField);
     }
 
     public function getAddressField(): ?string

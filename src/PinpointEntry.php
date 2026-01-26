@@ -36,6 +36,8 @@ class PinpointEntry extends Entry
 
     protected string|Closure|null $lngField = 'lng';
 
+    protected string|Closure|null $radiusField = null;
+
     protected array|Closure|null $pins = null;
 
     protected bool|Closure $fitBounds = true;
@@ -76,6 +78,13 @@ class PinpointEntry extends Entry
         return $this;
     }
 
+    public function radiusField(string|Closure|null $field): static
+    {
+        $this->radiusField = $field;
+
+        return $this;
+    }
+
     public function getDefaultLat(): float
     {
         return $this->evaluate($this->defaultLat) ?? config('filament-pinpoint.default.lat', -0.5050);
@@ -104,6 +113,11 @@ class PinpointEntry extends Entry
     public function getLngField(): ?string
     {
         return $this->evaluate($this->lngField);
+    }
+
+    public function getRadiusField(): ?string
+    {
+        return $this->evaluate($this->radiusField);
     }
 
     public function pins(array|Closure $pins): static
@@ -146,7 +160,7 @@ class PinpointEntry extends Entry
             return $this->getDefaultLat();
         }
 
-        return $record->{$latField} ?? $this->getDefaultLat();
+        return data_get($record, $latField) ?? $this->getDefaultLat();
     }
 
     public function getLng(): ?float
@@ -158,7 +172,19 @@ class PinpointEntry extends Entry
             return $this->getDefaultLng();
         }
 
-        return $record->{$lngField} ?? $this->getDefaultLng();
+        return data_get($record, $lngField) ?? $this->getDefaultLng();
+    }
+
+    public function getRadius(): ?int
+    {
+        $record = $this->getRecord();
+        $radiusField = $this->getRadiusField();
+
+        if (!$record || !$radiusField) {
+            return null;
+        }
+
+        return data_get($record, $radiusField);
     }
 
     public function getApiKey(): ?string
