@@ -165,20 +165,23 @@
                     map: this.map,
                     draggable: this.isDraggable,
                     animation: google.maps.Animation.DROP,
+                    zIndex: 200
                 });
 
                 if (this.radiusField) {
                     this.circle = new google.maps.Circle({
-                        strokeColor: "#FF0000",
+                        strokeColor: '#4285F4',
                         strokeOpacity: 0.8,
                         strokeWeight: 2,
-                        fillColor: "#FF0000",
+                        fillColor: '#4285F4',
                         fillOpacity: 0.35,
                         map: this.map,
                         center: { lat: this.lat, lng: this.lng },
                         radius: this.radius,
                         editable: true,
-                        draggable: false
+                        draggable: false,
+                        clickable: true,
+                        zIndex: 100
                     });
 
                     this.circle.addListener('radius_changed', () => {

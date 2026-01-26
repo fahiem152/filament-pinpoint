@@ -145,7 +145,16 @@ Pinpoint::make('location')
     ->defaultRadius(500)    // Default 500 meters
 ```
 
-When `radiusField` is configured, an interactive circle will appear on the map. You can change the radius by dragging the circle's edges, and the value will be automatically saved to your database field.
+When `radiusField` is configured, an **interactive blue circle** will appear on the map. You can:
+
+- **Resize the radius** by dragging the small white handle on the circle's edge
+- **View the radius** visually on the map
+- The radius value (in meters) is automatically saved to your database field in real-time
+- The circle uses proper z-index layering so the marker always appears on top
+
+**Visual hierarchy:**
+- Marker (pin): zIndex 200 - always on top
+- Circle (radius): zIndex 100 - below the marker
 
 ### Disable Features
 
