@@ -2,6 +2,13 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.4 - 2026-01-26
+
+### Added
+
+- 🚀 **Filament v5 support** - The package now officially supports Filament v5.
+- 📦 Updated composer constraints to allow `filament/filament: ^5.0`.
+
 ## v1.1.3 - 2026-01-06
 
 ### Added

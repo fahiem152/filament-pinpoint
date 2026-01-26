@@ -1,5 +1,5 @@
 {{--
-    Pinpoint - Google Maps Location Picker for Filament 4
+    Pinpoint - Google Maps Location Picker for Filament 4 & 5
 
     A custom Filament form field with Google Maps integration.
     Features: Search, draggable marker, reverse geocoding, current location.
