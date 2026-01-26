@@ -46,7 +46,7 @@
             searchBox: null,
             lat: parseFloat(@js($currentLat)) || @js($defaultLat),
             lng: parseFloat(@js($currentLng)) || @js($defaultLng),
-            radius: parseInt(@js($currentRadius)) || 0,
+            radius: parseInt(@js($currentRadius)) || @js($getDefaultRadius()) || 500,
             address: @js($currentAddress),
             defaultLat: @js($defaultLat),
             defaultLng: @js($defaultLng),

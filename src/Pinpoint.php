@@ -91,7 +91,13 @@ class Pinpoint extends Field
             }
         });
 
-        $this->dehydrateStateUsing(function ($state) {
+        $this->dehydrateStateUsing(function (Pinpoint $component, $state) {
+            $radiusField = $component->getRadiusField();
+
+            if ($radiusField && isset($state['radius'])) {
+                return $state;
+            }
+
             return $state;
         });
     }
