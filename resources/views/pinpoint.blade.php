@@ -462,12 +462,11 @@
                     x-model="address"
                     placeholder="{{ __('filament-pinpoint::pinpoint.search') }}"
                     style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none; border: 1px solid #d1d5db;"
-                    class="bg-white dark:bg-gray-900 dark:!border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:!border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    class="bg-white dark:bg-gray-800 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                 />
             </div>
         @endif
 
-       
 
         {{-- Map Container --}}
         <div class="relative rounded-lg border border-gray-300 dark:border-gray-700" style="overflow: clip;">
