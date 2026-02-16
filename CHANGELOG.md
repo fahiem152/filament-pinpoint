@@ -2,12 +2,25 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.5 - 2026-02-16
+
+### Added
+
+- 🏠 **Street & street number auto-fill** - New `streetField()` and `streetNumberField()` methods for auto-filling street name and street number from reverse geocoding (PR #11 by [@jyrkidn](https://github.com/jyrkidn))
+
+### Fixed
+
+- 🌙 **Dark theme search box** - Fixed search input background and border styling in dark mode (PR #14 by [@ismailalterweb](https://github.com/ismailalterweb))
+  - Changed dark background from `gray-900` to `gray-800` for better contrast
+  - Removed unnecessary `!important` overrides on border and focus styles
+
 ## v1.1.4 - 2026-01-26
 
 ### Added
 
 - 🚀 **Filament v5 support** - The package now officially supports Filament v5.
 - 📦 Updated composer constraints to allow `filament/filament: ^5.0`.
+
 ### Improved
 
 - 🎨 **Enhanced radius circle UX and visual hierarchy**

@@ -131,7 +131,7 @@ Pinpoint::make('location')
     ->postalCodeField('postal_code')     // Auto-fill postal/zip code field
     ->countryField('country')            // Auto-fill country field
     ->streetField('street')              // Auto-fill street field
-    ->streetField('street_number')       // Auto-fill street number field
+    ->streetNumberField('street_number') // Auto-fill street number field
     ->columnSpanFull()
 ```
 
@@ -335,6 +335,8 @@ The `PinpointEntry` displays:
 | `villageField(string $field)` | Field name for auto-fill village/sub-district | `null` |
 | `postalCodeField(string $field)` | Field name for auto-fill postal/zip code | `null` |
 | `countryField(string $field)` | Field name for auto-fill country | `null` |
+| `streetField(string $field)` | Field name for auto-fill street | `null` |
+| `streetNumberField(string $field)` | Field name for auto-fill street number | `null` |
 | `radiusField(string $field)` | Field name for auto-fill radius | `null` |
 | `defaultRadius(int $radius)` | Set default radius in meters | `500` |
 | `draggable(bool $draggable)` | Enable/disable marker dragging | `true` |
