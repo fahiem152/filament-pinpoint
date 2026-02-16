@@ -6,6 +6,7 @@ All notable changes to `filament-pinpoint` will be documented in this file.
 
 ### Added
 
+- 🚀 **Filament v5 official support** - The package now fully supports Filament v5 alongside v4. Composer constraint updated to `^4.0|^5.0` (PR #11 by [@jyrkidn](https://github.com/jyrkidn), PR #12 by [@manusiakemos](https://github.com/manusiakemos))
 - 🏠 **Street & street number auto-fill** - New `streetField()` and `streetNumberField()` methods for auto-filling street name and street number from reverse geocoding (PR #11 by [@jyrkidn](https://github.com/jyrkidn))
 
 ### Fixed
