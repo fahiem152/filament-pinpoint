@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/fahiem/filament-pinpoint.svg?style=flat-square)](https://packagist.org/packages/fahiem/filament-pinpoint)
 [![License](https://img.shields.io/packagist/l/fahiem/filament-pinpoint.svg?style=flat-square)](https://packagist.org/packages/fahiem/filament-pinpoint)
 
-📍 A Google Maps location picker component for **Filament 4** with search, draggable marker, and reverse geocoding support.
+📍 A Google Maps location picker component for **Filament 4 & 5** with search, draggable marker, and reverse geocoding support.
 
 ![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-3.png)
 
@@ -26,7 +26,7 @@
 
 - PHP 8.1+
 - Laravel 10+ / 11+ / 12+
-- Filament 4.0+
+- Filament 4.0+ / 5.0+
 - Google Maps API Key with the following APIs enabled:
   - Maps JavaScript API
   - Places API

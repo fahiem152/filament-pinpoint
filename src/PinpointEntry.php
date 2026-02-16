@@ -6,7 +6,7 @@ use Closure;
 use Filament\Infolists\Components\Entry;
 
 /**
- * PinpointEntry - Google Maps Location Display for Filament 4 Infolists
+ * PinpointEntry - Google Maps Location Display for Filament 4 & 5 Infolists
  *
  * A custom Filament infolist entry that displays a read-only Google Maps view
  * with a marker showing the location from the record.

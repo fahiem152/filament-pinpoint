@@ -6,7 +6,7 @@ use Closure;
 use Filament\Forms\Components\Field;
 
 /**
- * Pinpoint - Google Maps Location Picker for Filament 4
+ * Pinpoint - Google Maps Location Picker for Filament 4 & 5
  *
  * A custom Filament form field that provides an interactive Google Maps picker
  * with search functionality, draggable markers, and reverse geocoding.

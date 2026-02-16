@@ -1,5 +1,5 @@
 {{--
-    Pinpoint Entry - Google Maps Location Display for Filament 4 Infolists
+    Pinpoint Entry - Google Maps Location Display for Filament 4 & 5 Infolists
     @author Fahiem
     @version 1.2.0
     @package fahiem/filament-pinpoint

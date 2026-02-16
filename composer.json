@@ -1,6 +1,6 @@
 {
     "name": "fahiem/filament-pinpoint",
-    "description": "Google Maps location picker component for Filament 4 with search, draggable marker, and reverse geocoding",
+    "description": "Google Maps location picker component for Filament 4 & 5 with search, draggable marker, and reverse geocoding",
     "keywords": [
         "laravel",
         "filament",
@@ -9,6 +9,7 @@
         "maps",
         "geocoding",
         "filament-4",
+        "filament-5",
         "pinpoint"
     ],
     "homepage": "https://github.com/fahiem152/filament-pinpoint",
