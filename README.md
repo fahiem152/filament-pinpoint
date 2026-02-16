@@ -130,8 +130,8 @@ Pinpoint::make('location')
     ->villageField('village')            // Auto-fill village/district field
     ->postalCodeField('postal_code')     // Auto-fill postal/zip code field
     ->countryField('country')            // Auto-fill country field
-    ->radiusField('radius')             // Auto-fill radius field (in meters)
-    ->defaultRadius(1000)               // Default radius in meters
+    ->streetField('street')              // Auto-fill street field
+    ->streetField('street_number')       // Auto-fill street number field
     ->columnSpanFull()
 ```
 
@@ -320,18 +320,18 @@ The `PinpointEntry` displays:
 
 ### Pinpoint (Form Field)
 
-| Method | Description | Default |
-|--------|-------------|---------|
-| `defaultLocation(float $lat, float $lng)` | Set default center location | `-0.5050, 117.1500` |
-| `defaultZoom(int $zoom)` | Set default zoom level | `13` |
-| `height(int $height)` | Set map height in pixels | `400` |
-| `latField(string $field)` | Field name for latitude | `'lat'` |
-| `lngField(string $field)` | Field name for longitude | `'lng'` |
-| `addressField(string $field)` | Field name for auto-fill address | `null` |
-| `shortAddressField(string $field)` | Field name for auto-fill short address | `null` |
-| `provinceField(string $field)` | Field name for auto-fill province | `null` |
-| `cityField(string $field)` | Field name for auto-fill city/county | `null` |
-| `districtField(string $field)` | Field name for auto-fill district | `null` |
+| Method | Description                                   | Default |
+|--------|-----------------------------------------------|---------|
+| `defaultLocation(float $lat, float $lng)` | Set default center location                   | `-0.5050, 117.1500` |
+| `defaultZoom(int $zoom)` | Set default zoom level                        | `13` |
+| `height(int $height)` | Set map height in pixels                      | `400` |
+| `latField(string $field)` | Field name for latitude                       | `'lat'` |
+| `lngField(string $field)` | Field name for longitude                      | `'lng'` |
+| `addressField(string $field)` | Field name for auto-fill address              | `null` |
+| `shortAddressField(string $field)` | Field name for auto-fill short address        | `null` |
+| `provinceField(string $field)` | Field name for auto-fill province             | `null` |
+| `cityField(string $field)` | Field name for auto-fill city/county          | `null` |
+| `districtField(string $field)` | Field name for auto-fill district             | `null` |
 | `villageField(string $field)` | Field name for auto-fill village/sub-district | `null` |
 | `postalCodeField(string $field)` | Field name for auto-fill postal/zip code | `null` |
 | `countryField(string $field)` | Field name for auto-fill country | `null` |
@@ -387,6 +387,8 @@ Schema::create('locations', function (Blueprint $table) {
     $table->string('village')->nullable();
     $table->string('postal_code')->nullable();
     $table->string('country')->nullable();
+    $table->string('street')->nullable();
+    $table->string('street_number')->nullable();
     $table->timestamps();
 });
 ```

@@ -46,6 +46,10 @@ class Pinpoint extends Field
 
     protected string|Closure|null $shortAddressField = null;
 
+    protected string|Closure|null $streetField = null;
+
+    protected string|Closure|null $streetNumberField = null;
+
     protected string|Closure|null $provinceField = null;
 
     protected string|Closure|null $cityField = null;
@@ -160,20 +164,34 @@ class Pinpoint extends Field
         return $this;
     }
 
+    public function streetField(string|Closure|null $field): static
+    {
+        $this->streetField = $field;
+
+        return $this;
+    }
+
+    public function streetNumberField(string|Closure|null $field): static
+    {
+        $this->streetNumberField = $field;
+
+        return $this;
+    }
+
     public function provinceField(string|Closure|null $field): static
     {
         $this->provinceField = $field;
 
         return $this;
     }
-    
+
     public function cityField(string|Closure|null $field): static
     {
         $this->cityField = $field;
 
         return $this;
     }
-    
+
     public function districtField(string|Closure|null $field): static
     {
         $this->districtField = $field;
@@ -266,6 +284,16 @@ class Pinpoint extends Field
         return $this->evaluate($this->shortAddressField);
     }
 
+    public function getStreetField(): ?string
+    {
+        return $this->evaluate($this->streetField);
+    }
+
+    public function getStreetNumberField(): ?string
+    {
+        return $this->evaluate($this->streetNumberField);
+    }
+
     public function getProvinceField(): ?string
     {
         return $this->evaluate($this->provinceField);
@@ -275,7 +303,7 @@ class Pinpoint extends Field
     {
         return $this->evaluate($this->cityField);
     }
-    
+
     public function getDistrictField(): ?string
     {
         return $this->evaluate($this->districtField);
