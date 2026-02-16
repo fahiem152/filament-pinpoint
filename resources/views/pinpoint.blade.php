@@ -19,6 +19,7 @@
         $isSearchable = $isSearchable();
         $latField = $getLatField();
         $lngField = $getLngField();
+        $radiusField = $getRadiusField();
         $addressField = $getAddressField();
         $shortAddressField = $getShortAddressField();
         $streetField = $getStreetField();
@@ -34,6 +35,7 @@
         $state = $getState();
         $currentLat = $state['lat'] ?? $defaultLat;
         $currentLng = $state['lng'] ?? $defaultLng;
+        $currentRadius = $state['radius'] ?? $getDefaultRadius();
         $currentAddress = $state['address'] ?? '';
     @endphp
 
@@ -42,9 +44,11 @@
         x-data="{
             map: null,
             marker: null,
+            circle: null,
             searchBox: null,
             lat: parseFloat(@js($currentLat)) || @js($defaultLat),
             lng: parseFloat(@js($currentLng)) || @js($defaultLng),
+            radius: parseInt(@js($currentRadius)) || 0,
             address: @js($currentAddress),
             defaultLat: @js($defaultLat),
             defaultLng: @js($defaultLng),
@@ -54,6 +58,7 @@
             statePath: @js($statePath),
             latField: @js($latField),
             lngField: @js($lngField),
+            radiusField: @js($radiusField),
             addressField: @js($addressField),
             shortAddressField: @js($shortAddressField),
             streetField: @js($streetField),
@@ -83,6 +88,7 @@
             loadExistingCoordinates() {
                 const latPath = this.getFieldPath(this.latField);
                 const lngPath = this.getFieldPath(this.lngField);
+                const radiusPath = this.getFieldPath(this.radiusField);
                 const addressPath = this.getFieldPath(this.addressField);
 
                 if (latPath && lngPath) {
@@ -92,6 +98,13 @@
                     if (existingLat && existingLng) {
                         this.lat = parseFloat(existingLat);
                         this.lng = parseFloat(existingLng);
+                    }
+                }
+
+                if (radiusPath) {
+                    const existingRadius = $wire.get(radiusPath);
+                    if (existingRadius) {
+                        this.radius = parseInt(existingRadius);
                     }
                 }
 
@@ -156,7 +169,38 @@
                     map: this.map,
                     draggable: this.isDraggable,
                     animation: google.maps.Animation.DROP,
+                    zIndex: 200
                 });
+
+                if (this.radiusField) {
+                    this.circle = new google.maps.Circle({
+                        strokeColor: '#4285F4',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#4285F4',
+                        fillOpacity: 0.35,
+                        map: this.map,
+                        center: { lat: this.lat, lng: this.lng },
+                        radius: this.radius,
+                        editable: true,
+                        draggable: false,
+                        clickable: true,
+                        zIndex: 100
+                    });
+
+                    this.circle.addListener('radius_changed', () => {
+                        this.radius = Math.round(this.circle.getRadius());
+                        this.updateRadiusState();
+                    });
+
+                    this.circle.addListener('center_changed', () => {
+                        const center = this.circle.getCenter();
+                        if (this.marker.getPosition().lat() !== center.lat() || this.marker.getPosition().lng() !== center.lng()) {
+                            this.marker.setPosition(center);
+                            this.updatePosition(center.lat(), center.lng());
+                        }
+                    });
+                }
 
                 if (this.isDraggable) {
                     this.marker.addListener('dragend', (event) => {
@@ -206,6 +250,10 @@
                 this.lat = parseFloat(lat.toFixed(7));
                 this.lng = parseFloat(lng.toFixed(7));
 
+                if (this.circle) {
+                    this.circle.setCenter({ lat: this.lat, lng: this.lng });
+                }
+
                 // Set ke form data Filament using dynamic path (supports Repeater)
                 const latPath = this.getFieldPath(this.latField);
                 const lngPath = this.getFieldPath(this.lngField);
@@ -221,7 +269,15 @@
                 this.reverseGeocode(lat, lng);
             },
 
+            updateRadiusState() {
+                const radiusPath = this.getFieldPath(this.radiusField);
+                if (radiusPath) {
+                    $wire.set(radiusPath, this.radius);
+                }
+            },
+
             reverseGeocode(lat, lng) {
+
                 const geocoder = new google.maps.Geocoder();
                 const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
 
@@ -390,6 +446,9 @@
                         this.marker.setPosition(location);
                         this.map.setCenter(location);
                         this.map.setZoom(17);
+                        if (this.circle) {
+                            this.circle.setCenter(location);
+                        }
                         this.updatePosition(lat, lng);
                     },
                     (error) => {
@@ -450,6 +509,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
                 <span>{{ __('filament-pinpoint::pinpoint.instructions') }}</span>
+            </p>
+        @endif
+        @if ($radiusField)
+            <p style="font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 6px;" class="text-gray-500 dark:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                </svg>
+                <span>{{ __('filament-pinpoint::pinpoint.radius_instructions') }}</span>
             </p>
         @endif
         {{-- Get Current Location Button --}}

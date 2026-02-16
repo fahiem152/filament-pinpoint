@@ -2,6 +2,24 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.4 - 2026-01-26
+
+### Improved
+
+- 🎨 **Enhanced radius circle UX and visual hierarchy**
+  - Changed circle color from red to blue (#4285F4) for better visual appearance
+  - Added `zIndex` layering: marker (200) appears above circle (100)
+  - Added `clickable: true` to circle for better interactivity
+  - Improved drag-to-resize experience with proper z-index stacking
+- 🔧 Code quality improvements (quote style consistency)
+
+### Technical Details
+
+- Circle is now fully editable with `editable: true` property
+- Users can resize radius by dragging the circle's edge handles
+- Radius value automatically syncs to form field in real-time
+- Better visual feedback during drag operations
+
 ## v1.1.3 - 2026-01-06
 
 ### Added
