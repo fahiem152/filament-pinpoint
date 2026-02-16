@@ -1,5 +1,5 @@
 {{--
-    Pinpoint - Google Maps Location Picker for Filament 4
+    Pinpoint - Google Maps Location Picker for Filament 4 & 5
 
     A custom Filament form field with Google Maps integration.
     Features: Search, draggable marker, reverse geocoding, current location.
@@ -22,6 +22,8 @@
         $radiusField = $getRadiusField();
         $addressField = $getAddressField();
         $shortAddressField = $getShortAddressField();
+        $streetField = $getStreetField();
+        $streetNumberField = $getStreetNumberField();
         $provinceField = $getProvinceField();
         $villageField = $getVillageField();
         $cityField = $getCityField();
@@ -59,6 +61,8 @@
             radiusField: @js($radiusField),
             addressField: @js($addressField),
             shortAddressField: @js($shortAddressField),
+            streetField: @js($streetField),
+            streetNumberField: @js($streetNumberField),
             provinceField: @js($provinceField),
             cityField: @js($cityField),
             districtField: @js($districtField),
@@ -349,7 +353,7 @@
                             if (component.types.includes('postal_code')) {
                                 postalCode = component.long_name;
                             }
-                            
+
                             // Country
                             if (component.types.includes('country')) {
                                 country = component.long_name;
@@ -376,6 +380,16 @@
                         const shortAddressPath = this.getFieldPath(this.shortAddressField);
                         if (shortAddressPath) {
                             $wire.set(shortAddressPath, shortAddress || null);
+                        }
+
+                        const streetPath = this.getFieldPath(this.streetField);
+                        if (streetPath) {
+                            $wire.set(streetPath, route || null);
+                        }
+
+                        const streetNumberPath = this.getFieldPath(this.streetNumberField);
+                        if (this.streetNumberField) {
+                            $wire.set(streetNumberPath, streetNumber || null);
                         }
 
                         // Update province (supports Repeater)
@@ -468,6 +482,7 @@
         @endif
 
 
+
         {{-- Map Container --}}
         <div class="relative rounded-lg border border-gray-300 dark:border-gray-700" style="overflow: clip;">
             <div
@@ -486,7 +501,7 @@
                 </div>
             </div>
         </div>
- 
+
         {{-- Helper Text --}}
         @if ($isDraggable)
             <p style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 6px;" class="text-gray-500 dark:text-gray-400">
