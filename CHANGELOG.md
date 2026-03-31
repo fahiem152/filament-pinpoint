@@ -2,6 +2,24 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.6 - 2026-03-31
+
+### Added
+
+- 🗺️ **Leaflet.js provider** - Free alternative to Google Maps using OpenStreetMap + Nominatim. No API key required. Set `PINPOINT_PROVIDER=leaflet` in your `.env` to enable.
+  - Full search via Nominatim (location search & reverse geocoding)
+  - Draggable marker, resizable radius circle, current location button
+  - All auto-fill fields supported: address, province, city, district, village, postal code, country, street, street number
+  - Multi-marker support for `PinpointEntry` with colored SVG pins, popups, and `fitBounds`
+- 🌓 **Dark tile URL for Leaflet** - Set `LEAFLET_TILE_URL_DARK` to use a different tile layer in dark mode (e.g. CartoDB Dark)
+- ⚙️ **`provider()` method** - Override the map provider per field instance: `Pinpoint::make('location')->provider('leaflet')`
+- 📦 **New config keys**: `provider`, `leaflet.tile_url`, `leaflet.tile_url_dark`, `leaflet.tile_attribution`, `leaflet.nominatim_url`
+
+### Notes
+
+- **Fully backward compatible** — existing users default to `provider = 'google'`, no changes required
+- Leaflet.js (1.9.4) and its CSS are loaded on-demand from unpkg CDN only when the leaflet provider is active
+
 ## v1.1.5 - 2026-02-16
 
 ### Added

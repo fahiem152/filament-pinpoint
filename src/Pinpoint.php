@@ -6,25 +6,18 @@ use Closure;
 use Filament\Forms\Components\Field;
 
 /**
- * Pinpoint - Google Maps Location Picker for Filament 4 & 5
+ * Pinpoint - Location Picker for Filament 4 & 5
  *
- * A custom Filament form field that provides an interactive Google Maps picker
- * with search functionality, draggable markers, and reverse geocoding.
- *
- * Features:
- * - Search location using Google Places Autocomplete
- * - Click on map to set marker
- * - Drag marker to adjust location
- * - Get current device location
- * - Auto-fill address fields via reverse geocoding
+ * Supports Google Maps (default) and Leaflet.js (free/OpenStreetMap).
  *
  * @author Fahiem
- * @version 1.0.0
  * @license MIT
  */
 class Pinpoint extends Field
 {
     protected string $view = 'filament-pinpoint::pinpoint';
+
+    protected string|Closure|null $provider = null;
 
     protected float|Closure|null $defaultLat = null;
 
@@ -337,5 +330,46 @@ class Pinpoint extends Field
     public function getApiKey(): ?string
     {
         return config('filament-pinpoint.api_key');
+    }
+
+    public function provider(string|Closure $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getProvider(): string
+    {
+        return $this->evaluate($this->provider) ?? config('filament-pinpoint.provider', 'google');
+    }
+
+    public function getView(): string
+    {
+        if ($this->getProvider() === 'leaflet') {
+            return 'filament-pinpoint::pinpoint-leaflet';
+        }
+
+        return $this->view;
+    }
+
+    public function getTileUrl(): string
+    {
+        return config('filament-pinpoint.leaflet.tile_url', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    }
+
+    public function getTileUrlDark(): ?string
+    {
+        return config('filament-pinpoint.leaflet.tile_url_dark');
+    }
+
+    public function getTileAttribution(): string
+    {
+        return config('filament-pinpoint.leaflet.tile_attribution', '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+    }
+
+    public function getNominatimUrl(): string
+    {
+        return rtrim(config('filament-pinpoint.leaflet.nominatim_url', 'https://nominatim.openstreetmap.org'), '/');
     }
 }

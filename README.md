@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/fahiem/filament-pinpoint.svg?style=flat-square)](https://packagist.org/packages/fahiem/filament-pinpoint)
 [![License](https://img.shields.io/packagist/l/fahiem/filament-pinpoint.svg?style=flat-square)](https://packagist.org/packages/fahiem/filament-pinpoint)
 
-📍 A Google Maps location picker component for **Filament 4 & 5** with search, draggable marker, and reverse geocoding support.
+📍 A location picker component for **Filament 4 & 5** supporting **Google Maps** and **Leaflet.js (OpenStreetMap)** — with search, draggable marker, and reverse geocoding support.
 
 ![Screenshot](https://raw.githubusercontent.com/fahiem152/filament-pinpoint/main/images/screenshot-3.png)
 
@@ -12,25 +12,24 @@
 
 ## Features
 
-- 🔍 **Search location** - Using Google Places Autocomplete
-- 📍 **Click to set marker** - Click anywhere on the map to place a marker
-- ✋ **Draggable marker** - Drag the marker to fine-tune the location
-- 📱 **Current location** - Get user's current device location
-- ⭕ **Radius support** - Display and edit radius around the location
-- 🏠 **Reverse geocoding** - Auto-fill address fields from coordinates
-- 🌙 **Dark mode support** - Fully compatible with Filament's dark mode
-- 🌐 **Multi-language support** - Translations for EN, AR, NL, ID
-- ⚙️ **Fully configurable** - Customize height, zoom, default location, and more
+- 🗺️ **Two map providers** — Google Maps (default) or Leaflet.js / OpenStreetMap (free, no API key)
+- 🔍 **Search location** — Google Places Autocomplete (Google) or Nominatim (Leaflet)
+- 📍 **Click to set marker** — Click anywhere on the map to place a marker
+- ✋ **Draggable marker** — Drag the marker to fine-tune the location
+- 📱 **Current location** — Get user's current device location
+- ⭕ **Radius support** — Display and edit radius around the location
+- 🏠 **Reverse geocoding** — Auto-fill address fields from coordinates
+- 🌙 **Dark mode support** — Fully compatible with Filament's dark mode
+- 🌐 **Multi-language support** — Translations for EN, AR, NL, ID
+- ⚙️ **Fully configurable** — Customize height, zoom, default location, and more
 
 ## Requirements
 
 - PHP 8.1+
 - Laravel 10+ / 11+ / 12+
 - Filament 4.0+ / 5.0+
-- Google Maps API Key with the following APIs enabled:
-  - Maps JavaScript API
-  - Places API
-  - Geocoding API
+- **Google Maps provider** (default): API Key with Maps JavaScript API, Places API, and Geocoding API enabled
+- **Leaflet provider**: No API key required
 
 ## Installation
 
@@ -42,39 +41,52 @@ composer require fahiem/filament-pinpoint
 
 ## Configuration
 
-### 1. Set your Google Maps API Key
+### 1. Choose a map provider
 
-Add your Google Maps API key to your `.env` file:
+The default provider is **Google Maps**. To use **Leaflet.js (OpenStreetMap)** instead, set in your `.env`:
+
+```env
+PINPOINT_PROVIDER=leaflet
+```
+
+You can also override the provider per field instance:
+
+```php
+Pinpoint::make('location')->provider('leaflet')
+```
+
+### 2. Google Maps — set your API Key
+
+Required only when using `provider = google`:
 
 ```env
 GOOGLE_MAPS_API_KEY=your_api_key_here
 ```
 
-### 2. Publish the config file (optional)
+### 3. Leaflet — optional configuration
+
+Leaflet works out of the box with OpenStreetMap tiles. Optionally customize:
+
+```env
+# Custom tile server (default: OpenStreetMap)
+LEAFLET_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+
+# Optional dark mode tile URL (e.g. CartoDB Dark)
+LEAFLET_TILE_URL_DARK=https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png
+
+# Nominatim base URL for search & reverse geocoding (default: nominatim.openstreetmap.org)
+NOMINATIM_URL=https://nominatim.openstreetmap.org
+```
+
+### 4. Publish the config file (optional)
 
 ```bash
 php artisan vendor:publish --tag="filament-pinpoint-config"
 ```
 
-This will publish the config file to `config/filament-pinpoint.php`:
-
-```php
-return [
-    'api_key' => env('GOOGLE_MAPS_API_KEY'),
-
-    'default' => [
-        'lat' => env('GOOGLE_MAPS_DEFAULT_LAT', -0.5050),
-        'lng' => env('GOOGLE_MAPS_DEFAULT_LNG', 117.1500),
-        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 13),
-        'height' => env('GOOGLE_MAPS_DEFAULT_HEIGHT', 400),
-    ],
-];
-```
-
-You can also set default values via environment variables:
+You can also set default map values via environment variables:
 
 ```env
-GOOGLE_MAPS_API_KEY=your_api_key_here
 GOOGLE_MAPS_DEFAULT_LAT=-6.200000
 GOOGLE_MAPS_DEFAULT_LNG=106.816666
 GOOGLE_MAPS_DEFAULT_ZOOM=15
@@ -83,7 +95,7 @@ GOOGLE_MAPS_DEFAULT_HEIGHT=500
 
 ## Usage
 
-### Basic Usage
+### Basic Usage (Google Maps)
 
 ```php
 use Fahiem\FilamentPinpoint\Pinpoint;
@@ -106,6 +118,38 @@ public static function form(Form $form): Form
                 ->readOnly(),
         ]);
 }
+```
+
+### Using Leaflet (Free / No API Key)
+
+Set the provider globally via `.env`:
+
+```env
+PINPOINT_PROVIDER=leaflet
+```
+
+Or per field instance:
+
+```php
+Pinpoint::make('location')
+    ->provider('leaflet')
+    ->latField('lat')
+    ->lngField('lng')
+    ->addressField('address')
+    ->draggable()
+    ->searchable()
+```
+
+Same API, same methods — Leaflet uses **OpenStreetMap tiles** and **Nominatim** for search and reverse geocoding. No API key needed.
+
+For `PinpointEntry` (infolist):
+
+```php
+PinpointEntry::make('location')
+    ->provider('leaflet')
+    ->latField('lat')
+    ->lngField('lng')
+    ->columnSpanFull()
 ```
 
 ### Full Example with All Options
@@ -209,7 +253,7 @@ Repeater::make('branches')
 
 ### Infolist Entry (Read-Only Display)
 
-For displaying locations in infolists (view mode), use the `PinpointEntry` component. It displays a clean, read-only Google Map with a marker at the specified coordinates.
+For displaying locations in infolists (view mode), use the `PinpointEntry` component. It displays a clean, read-only map with a marker at the specified coordinates.
 
 #### Single Marker
 
@@ -310,8 +354,8 @@ PinpointEntry::make('location')
 ```
 
 The `PinpointEntry` displays:
-- A read-only Google Map with single or multiple markers
-- Optional info windows with labels or custom HTML content
+- A read-only map (Google Maps or Leaflet) with single or multiple markers
+- Optional info windows / popups with labels or custom HTML content
 - Auto-fit bounds to display all markers
 - Full dark mode support
 
@@ -322,6 +366,7 @@ The `PinpointEntry` displays:
 
 | Method | Description                                   | Default |
 |--------|-----------------------------------------------|---------|
+| `provider(string $provider)` | Map provider: `'google'` or `'leaflet'` | config value |
 | `defaultLocation(float $lat, float $lng)` | Set default center location                   | `-0.5050, 117.1500` |
 | `defaultZoom(int $zoom)` | Set default zoom level                        | `13` |
 | `height(int $height)` | Set map height in pixels                      | `400` |
@@ -346,6 +391,7 @@ The `PinpointEntry` displays:
 
 | Method | Description | Default |
 |--------|-------------|---------|
+| `provider(string $provider)` | Map provider: `'google'` or `'leaflet'` | config value |
 | `defaultLocation(float $lat, float $lng)` | Set default center location | `-0.5050, 117.1500` |
 | `defaultZoom(int $zoom)` | Set default zoom level | `13` |
 | `height(int $height)` | Set map height in pixels | `400` |
@@ -360,7 +406,7 @@ The `PinpointEntry` displays:
 | `hasPins()` | Check if pins are set | Returns boolean |
 
 
-## Getting a Google Maps API Key
+## Getting a Google Maps API Key (Google provider only)
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select an existing one

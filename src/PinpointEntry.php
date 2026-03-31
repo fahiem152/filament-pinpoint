@@ -6,23 +6,18 @@ use Closure;
 use Filament\Infolists\Components\Entry;
 
 /**
- * PinpointEntry - Google Maps Location Display for Filament 4 & 5 Infolists
+ * PinpointEntry - Location Display for Filament 4 & 5 Infolists
  *
- * A custom Filament infolist entry that displays a read-only Google Maps view
- * with a marker showing the location from the record.
- *
- * Features:
- * - Display location on Google Maps (read-only)
- * - Show marker at specified coordinates
- * - Dark mode support
+ * Supports Google Maps (default) and Leaflet.js (free/OpenStreetMap).
  *
  * @author Fahiem
- * @version 1.0.0
  * @license MIT
  */
 class PinpointEntry extends Entry
 {
     protected string $view = 'filament-pinpoint::pinpoint-entry';
+
+    protected string|Closure|null $provider = null;
 
     protected float|Closure|null $defaultLat = null;
 
@@ -190,6 +185,47 @@ class PinpointEntry extends Entry
     public function getApiKey(): ?string
     {
         return config('filament-pinpoint.api_key');
+    }
+
+    public function provider(string|Closure $provider): static
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getProvider(): string
+    {
+        return $this->evaluate($this->provider) ?? config('filament-pinpoint.provider', 'google');
+    }
+
+    public function getView(): string
+    {
+        if ($this->getProvider() === 'leaflet') {
+            return 'filament-pinpoint::pinpoint-entry-leaflet';
+        }
+
+        return $this->view;
+    }
+
+    public function getTileUrl(): string
+    {
+        return config('filament-pinpoint.leaflet.tile_url', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    }
+
+    public function getTileUrlDark(): ?string
+    {
+        return config('filament-pinpoint.leaflet.tile_url_dark');
+    }
+
+    public function getTileAttribution(): string
+    {
+        return config('filament-pinpoint.leaflet.tile_attribution', '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+    }
+
+    public function getNominatimUrl(): string
+    {
+        return rtrim(config('filament-pinpoint.leaflet.nominatim_url', 'https://nominatim.openstreetmap.org'), '/');
     }
 }
 
