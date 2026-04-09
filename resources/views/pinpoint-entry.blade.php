@@ -17,6 +17,7 @@
         $pins = $getPins();
         $hasPins = $hasPins();
         $fitBounds = $getFitBounds();
+        $locale = str_replace('_', '-', app()->getLocale());
     @endphp
 
     <div
@@ -71,7 +72,7 @@
                 }
 
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=googleMapsCallback`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=googleMapsCallback&language={{ str_replace('_', '-', app()->getLocale()) }}`;
                 script.async = true;
                 script.defer = true;
 

@@ -31,6 +31,7 @@
         $postalCodeField = $getPostalCodeField();
         $countryField = $getCountryField();
         $apiKey = $getApiKey();
+        $locale = str_replace('_', '-', app()->getLocale());
 
         $state = $getState();
         $currentLat = $state['lat'] ?? $defaultLat;
@@ -138,7 +139,7 @@
                 }
 
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=googleMapsCallback`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=googleMapsCallback&language={{ $locale }}`;
                 script.async = true;
                 script.defer = true;
 
