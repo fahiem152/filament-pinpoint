@@ -423,7 +423,7 @@
         @if ($isSearchable)
             <div style="position: relative; margin-bottom: 12px;">
                 <div style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; z-index: 1;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px;" class="text-gray-400 dark:text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; color: #9ca3af;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                 </div>
@@ -441,29 +441,26 @@
                     @blur="setTimeout(() => showDropdown = false, 200)"
                     @focus="searchResults.length > 0 && (showDropdown = true)"
                     placeholder="{{ __('filament-pinpoint::pinpoint.search') }}"
-                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none;"
-                    class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    class="pinpoint-search-input"
                 />
 
                 {{-- Search Results Dropdown --}}
                 <div
                     x-show="showDropdown && searchResults.length > 0"
                     x-cloak
-                    style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 8px; max-height: 240px; overflow-y: auto; z-index: 9999; box-shadow: 0 4px 16px -2px rgba(0,0,0,0.18);"
-                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600"
+                    class="pinpoint-search-dropdown"
                 >
                     <template x-for="(result, index) in searchResults" :key="index">
                         <button
                             type="button"
                             @mousedown.prevent="selectSearchResult(result)"
-                            style="display: flex; align-items: flex-start; gap: 8px; width: 100%; padding: 10px 14px; text-align: left; border: none; cursor: pointer;"
-                            class="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
+                            class="pinpoint-search-item"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px;" class="text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: #9ca3af;">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
-                            <span style="font-size: 13px; line-height: 1.4;" class="text-gray-800 dark:text-gray-200" x-text="result.display_name"></span>
+                            <span class="pinpoint-search-item-text" x-text="result.display_name"></span>
                         </button>
                     </template>
                 </div>
@@ -549,6 +546,74 @@
             cursor: ew-resize;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
+
+        /* Search Input */
+        .pinpoint-search-input {
+            display: block;
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            font-size: 14px;
+            border-radius: 8px;
+            outline: none;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            color: #111827;
+        }
+        .pinpoint-search-input::placeholder { color: #9ca3af; }
+        .pinpoint-search-input:focus {
+            border-color: var(--primary-500, #3b82f6);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .dark .pinpoint-search-input {
+            background-color: #1f2937;
+            border-color: #374151;
+            color: #ffffff;
+        }
+        .dark .pinpoint-search-input::placeholder { color: #6b7280; }
+
+        /* Search Dropdown */
+        .pinpoint-search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            border-radius: 8px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 9999;
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.18);
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+        .dark .pinpoint-search-dropdown {
+            background-color: #1f2937;
+            border-color: #4b5563;
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Search Dropdown Items */
+        .pinpoint-search-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 14px;
+            text-align: left;
+            border: none;
+            cursor: pointer;
+            background-color: #ffffff;
+        }
+        .pinpoint-search-item:hover { background-color: #f3f4f6; }
+        .dark .pinpoint-search-item { background-color: #1f2937; }
+        .dark .pinpoint-search-item:hover { background-color: #374151; }
+
+        .pinpoint-search-item-text {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #1f2937;
+        }
+        .dark .pinpoint-search-item-text { color: #e5e7eb; }
 
         /* Use My Location Button */
         .pinpoint-location-btn {

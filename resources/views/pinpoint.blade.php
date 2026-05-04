@@ -475,8 +475,7 @@
                     x-ref="searchInput"
                     x-model="address"
                     placeholder="{{ __('filament-pinpoint::pinpoint.search') }}"
-                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none;"
-                    class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    class="pinpoint-search-input"
                 />
             </div>
         @endif
@@ -541,6 +540,30 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+
+        /* Search Input */
+        .pinpoint-search-input {
+            display: block;
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            font-size: 14px;
+            border-radius: 8px;
+            outline: none;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            color: #111827;
+        }
+        .pinpoint-search-input::placeholder { color: #9ca3af; }
+        .pinpoint-search-input:focus {
+            border-color: var(--primary-500, #3b82f6);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .dark .pinpoint-search-input {
+            background-color: #1f2937;
+            border-color: #374151;
+            color: #ffffff;
+        }
+        .dark .pinpoint-search-input::placeholder { color: #6b7280; }
 
         /* Use My Location Button - Clean B&W Design */
         .pinpoint-location-btn {
