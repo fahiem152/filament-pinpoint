@@ -548,7 +548,7 @@
         }
 
         /* Search Input */
-        .pinpoint-search-input {
+        .fi-fo-pinpoint .pinpoint-search-input {
             display: block;
             width: 100%;
             padding: 10px 16px 10px 40px;
@@ -559,20 +559,20 @@
             border: 1px solid #d1d5db;
             color: #111827;
         }
-        .pinpoint-search-input::placeholder { color: #9ca3af; }
-        .pinpoint-search-input:focus {
+        .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #9ca3af; }
+        .fi-fo-pinpoint .pinpoint-search-input:focus {
             border-color: var(--primary-500, #3b82f6);
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
-        .dark .pinpoint-search-input {
-            background-color: #1f2937;
-            border-color: #374151;
-            color: #ffffff;
+        .dark .fi-fo-pinpoint .pinpoint-search-input {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+            color: #ffffff !important;
         }
-        .dark .pinpoint-search-input::placeholder { color: #6b7280; }
+        .dark .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #6b7280 !important; }
 
         /* Search Dropdown */
-        .pinpoint-search-dropdown {
+        .fi-fo-pinpoint .pinpoint-search-dropdown {
             position: absolute;
             top: 100%;
             left: 0;
@@ -586,14 +586,14 @@
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
         }
-        .dark .pinpoint-search-dropdown {
-            background-color: #1f2937;
-            border-color: #4b5563;
-            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+        .dark .fi-fo-pinpoint .pinpoint-search-dropdown {
+            background-color: #1f2937 !important;
+            border-color: #4b5563 !important;
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
         }
 
         /* Search Dropdown Items */
-        .pinpoint-search-item {
+        .fi-fo-pinpoint .pinpoint-search-item {
             display: flex;
             align-items: flex-start;
             gap: 8px;
@@ -604,16 +604,16 @@
             cursor: pointer;
             background-color: #ffffff;
         }
-        .pinpoint-search-item:hover { background-color: #f3f4f6; }
-        .dark .pinpoint-search-item { background-color: #1f2937; }
-        .dark .pinpoint-search-item:hover { background-color: #374151; }
+        .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: #f3f4f6; }
+        .dark .fi-fo-pinpoint .pinpoint-search-item { background-color: #1f2937 !important; }
+        .dark .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: #374151 !important; }
 
-        .pinpoint-search-item-text {
+        .fi-fo-pinpoint .pinpoint-search-item-text {
             font-size: 13px;
             line-height: 1.4;
             color: #1f2937;
         }
-        .dark .pinpoint-search-item-text { color: #e5e7eb; }
+        .dark .fi-fo-pinpoint .pinpoint-search-item-text { color: #e5e7eb !important; }
 
         /* Use My Location Button */
         .pinpoint-location-btn {

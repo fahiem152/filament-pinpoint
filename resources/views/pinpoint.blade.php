@@ -542,7 +542,7 @@
         }
 
         /* Search Input */
-        .pinpoint-search-input {
+        .fi-fo-pinpoint .pinpoint-search-input {
             display: block;
             width: 100%;
             padding: 10px 16px 10px 40px;
@@ -553,17 +553,17 @@
             border: 1px solid #d1d5db;
             color: #111827;
         }
-        .pinpoint-search-input::placeholder { color: #9ca3af; }
-        .pinpoint-search-input:focus {
+        .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #9ca3af; }
+        .fi-fo-pinpoint .pinpoint-search-input:focus {
             border-color: var(--primary-500, #3b82f6);
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
-        .dark .pinpoint-search-input {
-            background-color: #1f2937;
-            border-color: #374151;
-            color: #ffffff;
+        .dark .fi-fo-pinpoint .pinpoint-search-input {
+            background-color: #1f2937 !important;
+            border-color: #374151 !important;
+            color: #ffffff !important;
         }
-        .dark .pinpoint-search-input::placeholder { color: #6b7280; }
+        .dark .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #6b7280 !important; }
 
         /* Use My Location Button - Clean B&W Design */
         .pinpoint-location-btn {
