@@ -2,6 +2,16 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.7 - 2026-05-04
+
+### Fixed
+
+- 🌙 **Dark mode dropdown unreadable on Leaflet provider** - Fixed search autocomplete dropdown showing white background with invisible text in dark mode (#16 by [@daljo25](https://github.com/daljo25))
+  - Replaced Tailwind utility classes with plain CSS using `.dark` selector, since plugin views aren't scanned by the app's Tailwind JIT compiler
+  - Scoped all search component styles (`.pinpoint-search-input`, `.pinpoint-search-dropdown`, `.pinpoint-search-item`) under `.fi-fo-pinpoint` for proper specificity
+  - Search input, dropdown container, dropdown items, and result text now fully adapt to dark mode
+  - Applied same fix to Google Maps search input for consistency
+
 ## v1.1.6 - 2026-03-31
 
 ### Added
