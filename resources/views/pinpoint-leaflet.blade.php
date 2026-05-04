@@ -441,23 +441,23 @@
                     @blur="setTimeout(() => showDropdown = false, 200)"
                     @focus="searchResults.length > 0 && (showDropdown = true)"
                     placeholder="{{ __('filament-pinpoint::pinpoint.search') }}"
-                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none; border: 1px solid #d1d5db;"
-                    class="bg-white dark:bg-gray-800 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                    style="display: block; width: 100%; padding: 10px 16px 10px 40px; font-size: 14px; border-radius: 8px; outline: none;"
+                    class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
                 />
 
                 {{-- Search Results Dropdown --}}
                 <div
                     x-show="showDropdown && searchResults.length > 0"
                     x-cloak
-                    style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 8px; border: 1px solid #e5e7eb; max-height: 240px; overflow-y: auto; z-index: 9999; box-shadow: 0 4px 16px -2px rgba(0,0,0,0.18); background-color: #ffffff;"
-                    class="dark:bg-gray-800 dark:border-gray-600"
+                    style="position: absolute; top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 8px; max-height: 240px; overflow-y: auto; z-index: 9999; box-shadow: 0 4px 16px -2px rgba(0,0,0,0.18);"
+                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600"
                 >
                     <template x-for="(result, index) in searchResults" :key="index">
                         <button
                             type="button"
                             @mousedown.prevent="selectSearchResult(result)"
-                            style="display: flex; align-items: flex-start; gap: 8px; width: 100%; padding: 10px 14px; text-align: left; border: none; cursor: pointer; background-color: #ffffff;"
-                            class="hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
+                            style="display: flex; align-items: flex-start; gap: 8px; width: 100%; padding: 10px 14px; text-align: left; border: none; cursor: pointer;"
+                            class="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px;" class="text-gray-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
