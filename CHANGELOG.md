@@ -2,6 +2,12 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
+## v1.1.8 - 2026-05-06
+
+### Added
+
+- 🌐 **Spanish (es) translation** — Added Spanish localization for all UI strings (PR #17 by [@daljo25](https://github.com/daljo25))
+
 ## v1.1.7 - 2026-05-04
 
 ### Fixed

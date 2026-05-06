@@ -20,7 +20,7 @@
 - ⭕ **Radius support** — Display and edit radius around the location
 - 🏠 **Reverse geocoding** — Auto-fill address fields from coordinates
 - 🌙 **Dark mode support** — Fully compatible with Filament's dark mode
-- 🌐 **Multi-language support** — Translations for EN, AR, NL, ID
+- 🌐 **Multi-language support** — Translations for EN, AR, NL, ID, ES
 - ⚙️ **Fully configurable** — Customize height, zoom, default location, and more
 
 ## Requirements
@@ -451,6 +451,7 @@ This package supports multiple languages out of the box:
 | Arabic | `ar` |
 | Dutch | `nl` |
 | Indonesian | `id` |
+| Spanish | `es` |
 
 ### Publishing Translations
 
