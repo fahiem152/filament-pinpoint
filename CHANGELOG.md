@@ -2,10 +2,18 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
-## v1.1.8 - 2026-05-06
+## v1.1.8 - 2026-07-22
 
 ### Added
 
+- 🔒 **Read-only mode support** - Implement `CanBeReadOnly` on Pinpoint form component (#18 by [@gpibarra](https://github.com/gpibarra))
+  - New `readOnly()` method to make the map display-only (no drag, no click, no search)
+  - New `readOnlyOn()` method to restrict editing on specific operations (e.g., `readOnlyOn('view')`)
+  - Supports closures for conditional read-only: `readOnly(fn () => !auth()->user()->can('edit'))`
+  - Works with both Google Maps and Leaflet providers
+  - Map remains pannable and zoomable for viewing
+  - Radius circle is displayed but not editable when read-only
+  - Search box, "Use My Location" button, and helper text are hidden when read-only
 - 🌐 **Spanish (es) translation** — Added Spanish localization for all UI strings (PR #17 by [@daljo25](https://github.com/daljo25))
 
 ## v1.1.7 - 2026-05-04

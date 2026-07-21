@@ -208,6 +208,32 @@ Pinpoint::make('location')
     ->searchable(false) // Hide search box
 ```
 
+### Read-Only Mode (New in v1.2.0)
+
+Make the map display-only while keeping it visible in your form. The map remains pannable and zoomable for viewing, but all editing interactions are disabled.
+
+```php
+// Always read-only
+Pinpoint::make('location')
+    ->readOnly()
+
+// Conditional read-only
+Pinpoint::make('location')
+    ->readOnly(fn () => auth()->user()->cannot('edit-location'))
+
+// Read-only on specific operations (e.g., view page only)
+Pinpoint::make('location')
+    ->readOnlyOn('view')
+```
+
+When read-only is active:
+- Marker cannot be dragged
+- Clicking the map does not move the marker
+- Search box is hidden
+- "Use My Location" button is hidden
+- Radius circle is displayed but cannot be resized
+- Helper text is hidden
+
 ### Using with Repeater
 
 Pinpoint fully supports Filament's Repeater component. Each repeater item gets its own independent map and fields:
@@ -386,6 +412,8 @@ The `PinpointEntry` displays:
 | `defaultRadius(int $radius)` | Set default radius in meters | `500` |
 | `draggable(bool $draggable)` | Enable/disable marker dragging | `true` |
 | `searchable(bool $searchable)` | Enable/disable search box | `true` |
+| `readOnly(bool\|Closure $condition)` | Make the map display-only | `false` |
+| `readOnlyOn(string\|array $operations)` | Read-only on specific operations | `null` |
 
 ### PinpointEntry (Infolist Entry)
 

@@ -17,6 +17,12 @@
         $height           = $getHeight();
         $isDraggable      = $isDraggable();
         $isSearchable     = $isSearchable();
+        $isReadOnly       = $isReadOnly();
+
+        if ($isReadOnly) {
+            $isDraggable  = false;
+            $isSearchable = false;
+        }
         $latField         = $getLatField();
         $lngField         = $getLngField();
         $radiusField      = $getRadiusField();
@@ -59,6 +65,7 @@
             defaultZoom: @js($defaultZoom),
             isDraggable: @js($isDraggable),
             isSearchable: @js($isSearchable),
+            isReadOnly: @js($isReadOnly),
             statePath: @js($statePath),
             latField: @js($latField),
             lngField: @js($lngField),
@@ -190,10 +197,12 @@
                 }
 
                 // Map click
-                this.map.on('click', (e) => {
-                    this.marker.setLatLng(e.latlng);
-                    this.updatePosition(e.latlng.lat, e.latlng.lng);
-                });
+                if (!this.isReadOnly) {
+                    this.map.on('click', (e) => {
+                        this.marker.setLatLng(e.latlng);
+                        this.updatePosition(e.latlng.lat, e.latlng.lng);
+                    });
+                }
 
                 // Radius circle
                 if (this.radiusField) {
@@ -218,30 +227,32 @@
                     weight: 2,
                 }).addTo(this.map);
 
-                // Drag handle on the east edge of the circle
-                const handlePos = this.getCircleEdgeLatLng();
-                this.radiusHandle = L.marker(handlePos, {
-                    draggable: true,
-                    icon: L.divIcon({
-                        className: 'pinpoint-radius-handle',
-                        html: '<div></div>',
-                        iconSize: [14, 14],
-                        iconAnchor: [7, 7],
-                    }),
-                }).addTo(this.map);
+                if (!this.isReadOnly) {
+                    // Drag handle on the east edge of the circle
+                    const handlePos = this.getCircleEdgeLatLng();
+                    this.radiusHandle = L.marker(handlePos, {
+                        draggable: true,
+                        icon: L.divIcon({
+                            className: 'pinpoint-radius-handle',
+                            html: '<div></div>',
+                            iconSize: [14, 14],
+                            iconAnchor: [7, 7],
+                        }),
+                    }).addTo(this.map);
 
-                this.radiusHandle.on('drag', (e) => {
-                    const center = L.latLng(this.lat, this.lng);
-                    const newRadius = Math.round(center.distanceTo(e.latlng));
-                    this.radius = newRadius;
-                    this.circle.setRadius(newRadius);
-                    this.updateRadiusState();
-                });
+                    this.radiusHandle.on('drag', (e) => {
+                        const center = L.latLng(this.lat, this.lng);
+                        const newRadius = Math.round(center.distanceTo(e.latlng));
+                        this.radius = newRadius;
+                        this.circle.setRadius(newRadius);
+                        this.updateRadiusState();
+                    });
 
-                this.radiusHandle.on('dragend', () => {
-                    // Snap handle back to east edge after drag
-                    this.radiusHandle.setLatLng(this.getCircleEdgeLatLng());
-                });
+                    this.radiusHandle.on('dragend', () => {
+                        // Snap handle back to east edge after drag
+                        this.radiusHandle.setLatLng(this.getCircleEdgeLatLng());
+                    });
+                }
             },
 
             getCircleEdgeLatLng() {
@@ -312,7 +323,9 @@
 
                 if (this.circle) {
                     this.circle.setLatLng([this.lat, this.lng]);
-                    this.radiusHandle.setLatLng(this.getCircleEdgeLatLng());
+                    if (this.radiusHandle) {
+                        this.radiusHandle.setLatLng(this.getCircleEdgeLatLng());
+                    }
                 }
 
                 const latPath = this.getFieldPath(this.latField);
@@ -495,7 +508,7 @@
                 <span>{{ __('filament-pinpoint::pinpoint.instructions') }}</span>
             </p>
         @endif
-        @if ($radiusField)
+        @if ($radiusField && !$isReadOnly)
             <p style="font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 6px;" class="text-gray-500 dark:text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
@@ -505,6 +518,7 @@
         @endif
 
         {{-- Get Current Location Button --}}
+        @if (!$isReadOnly)
         <button
             type="button"
             x-show="isMapLoaded"
@@ -518,6 +532,7 @@
             </svg>
             <span>{{ __('filament-pinpoint::pinpoint.use_my_location') }}</span>
         </button>
+        @endif
     </div>
 
     <style>

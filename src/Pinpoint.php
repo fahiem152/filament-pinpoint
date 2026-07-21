@@ -3,6 +3,7 @@
 namespace Fahiem\FilamentPinpoint;
 
 use Closure;
+use Filament\Forms\Components\Concerns\CanBeReadOnly;
 use Filament\Forms\Components\Field;
 
 /**
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Field;
  */
 class Pinpoint extends Field
 {
+    use CanBeReadOnly;
     protected string $view = 'filament-pinpoint::pinpoint';
 
     protected string|Closure|null $provider = null;
