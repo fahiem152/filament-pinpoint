@@ -2,7 +2,7 @@
 
 All notable changes to `filament-pinpoint` will be documented in this file.
 
-## v1.1.8 - 2026-07-22
+## v1.1.9 - 2026-07-22
 
 ### Added
 
@@ -14,7 +14,6 @@ All notable changes to `filament-pinpoint` will be documented in this file.
   - Map remains pannable and zoomable for viewing
   - Radius circle is displayed but not editable when read-only
   - Search box, "Use My Location" button, and helper text are hidden when read-only
-- 🌐 **Spanish (es) translation** — Added Spanish localization for all UI strings (PR #17 by [@daljo25](https://github.com/daljo25))
 
 ### Improved
 
