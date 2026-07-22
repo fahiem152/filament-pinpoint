@@ -92,6 +92,11 @@
             searchTimeout: null,
             isSearching: false,
 
+            getPrimaryColor() {
+                const raw = getComputedStyle(document.documentElement).getPropertyValue('--primary-500').trim();
+                return raw || '#3b82f6';
+            },
+
             getFieldPath(fieldName) {
                 if (!fieldName) return null;
                 const lastDotIndex = this.statePath.lastIndexOf('.');
@@ -219,10 +224,11 @@
 
             initRadiusCircle() {
                 const r = this.radius || 500;
+                const circleColor = this.getPrimaryColor();
                 this.circle = L.circle([this.lat, this.lng], {
                     radius: r,
-                    color: '#4285F4',
-                    fillColor: '#4285F4',
+                    color: circleColor,
+                    fillColor: circleColor,
                     fillOpacity: 0.2,
                     weight: 2,
                 }).addTo(this.map);
@@ -436,12 +442,12 @@
         @if ($isSearchable)
             <div style="position: relative; margin-bottom: 12px;">
                 <div style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; z-index: 1;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; color: #9ca3af;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; color: var(--gray-400, #9ca3af);">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
                 </div>
                 <div x-show="isSearching" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">
-                    <svg style="animation: spin 1s linear infinite; width: 14px; height: 14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="text-gray-400">
+                    <svg style="animation: spin 1s linear infinite; width: 14px; height: 14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="pinpoint-icon">
                         <circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
@@ -469,7 +475,7 @@
                             @mousedown.prevent="selectSearchResult(result)"
                             class="pinpoint-search-item"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: #9ca3af;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; color: var(--gray-400, #9ca3af);">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
@@ -481,14 +487,14 @@
         @endif
 
         {{-- Map Container --}}
-        <div class="relative rounded-lg border border-gray-300 dark:border-gray-700" style="overflow: clip;">
+        <div class="pinpoint-map-border" style="position: relative; border-radius: 8px; border-width: 1px; border-style: solid; overflow: clip;">
             <div
                 x-ref="map"
                 style="height: {{ $height }}px; width: 100%;"
-                class="bg-gray-100 dark:bg-gray-800"
+                class="pinpoint-map-bg"
             >
                 <div x-show="!isMapLoaded" style="display: flex; align-items: center; justify-content: center; height: 100%;">
-                    <div style="display: flex; align-items: center; gap: 8px;" class="text-gray-500 dark:text-gray-400">
+                    <div style="display: flex; align-items: center; gap: 8px;" class="pinpoint-muted">
                         <svg style="animation: spin 1s linear infinite; width: 20px; height: 20px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle style="opacity: 0.25;" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path style="opacity: 0.75;" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -501,7 +507,7 @@
 
         {{-- Helper Text --}}
         @if ($isDraggable)
-            <p style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 6px;" class="text-gray-500 dark:text-gray-400">
+            <p style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 6px;" class="pinpoint-muted">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
@@ -509,7 +515,7 @@
             </p>
         @endif
         @if ($radiusField && !$isReadOnly)
-            <p style="font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 6px;" class="text-gray-500 dark:text-gray-400">
+            <p style="font-size: 12px; margin-top: 4px; display: flex; align-items: center; gap: 6px;" class="pinpoint-muted">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; flex-shrink: 0;">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                 </svg>
@@ -556,11 +562,21 @@
             width: 14px;
             height: 14px;
             background: white;
-            border: 2px solid #4285F4;
+            border: 2px solid var(--primary-500, #3b82f6);
             border-radius: 50%;
             cursor: ew-resize;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
+
+        /* Theme-aware utility classes (Tailwind classes don't compile in plugin views) */
+        .fi-fo-pinpoint .pinpoint-map-border { border-color: var(--gray-300, #d1d5db); }
+        .dark .fi-fo-pinpoint .pinpoint-map-border { border-color: var(--gray-700, #374151); }
+        .fi-fo-pinpoint .pinpoint-map-bg { background-color: var(--gray-100, #f3f4f6); }
+        .dark .fi-fo-pinpoint .pinpoint-map-bg { background-color: var(--gray-800, #1f2937); }
+        .fi-fo-pinpoint .pinpoint-muted { color: var(--gray-500, #6b7280); }
+        .dark .fi-fo-pinpoint .pinpoint-muted { color: var(--gray-400, #9ca3af); }
+        .fi-fo-pinpoint .pinpoint-icon { color: var(--gray-400, #9ca3af); }
+        .dark .fi-fo-pinpoint .pinpoint-icon { color: var(--gray-500, #6b7280); }
 
         /* Search Input */
         .fi-fo-pinpoint .pinpoint-search-input {
@@ -570,21 +586,21 @@
             font-size: 14px;
             border-radius: 8px;
             outline: none;
-            background-color: #ffffff;
-            border: 1px solid #d1d5db;
-            color: #111827;
+            background-color: white;
+            border: 1px solid var(--gray-300, #d1d5db);
+            color: var(--gray-900, #111827);
         }
-        .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #9ca3af; }
+        .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: var(--gray-400, #9ca3af); }
         .fi-fo-pinpoint .pinpoint-search-input:focus {
             border-color: var(--primary-500, #3b82f6);
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-500, #3b82f6) 20%, transparent);
         }
         .dark .fi-fo-pinpoint .pinpoint-search-input {
-            background-color: #1f2937 !important;
-            border-color: #374151 !important;
-            color: #ffffff !important;
+            background-color: var(--gray-800, #1f2937);
+            border-color: var(--gray-700, #374151);
+            color: white;
         }
-        .dark .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: #6b7280 !important; }
+        .dark .fi-fo-pinpoint .pinpoint-search-input::placeholder { color: var(--gray-500, #6b7280); }
 
         /* Search Dropdown */
         .fi-fo-pinpoint .pinpoint-search-dropdown {
@@ -598,13 +614,13 @@
             overflow-y: auto;
             z-index: 9999;
             box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.18);
-            background-color: #ffffff;
-            border: 1px solid #e5e7eb;
+            background-color: white;
+            border: 1px solid var(--gray-200, #e5e7eb);
         }
         .dark .fi-fo-pinpoint .pinpoint-search-dropdown {
-            background-color: #1f2937 !important;
-            border-color: #4b5563 !important;
-            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
+            background-color: var(--gray-800, #1f2937);
+            border-color: var(--gray-600, #4b5563);
+            box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
         }
 
         /* Search Dropdown Items */
@@ -617,21 +633,21 @@
             text-align: left;
             border: none;
             cursor: pointer;
-            background-color: #ffffff;
+            background-color: white;
         }
-        .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: #f3f4f6; }
-        .dark .fi-fo-pinpoint .pinpoint-search-item { background-color: #1f2937 !important; }
-        .dark .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: #374151 !important; }
+        .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: var(--gray-100, #f3f4f6); }
+        .dark .fi-fo-pinpoint .pinpoint-search-item { background-color: var(--gray-800, #1f2937); }
+        .dark .fi-fo-pinpoint .pinpoint-search-item:hover { background-color: var(--gray-700, #374151); }
 
         .fi-fo-pinpoint .pinpoint-search-item-text {
             font-size: 13px;
             line-height: 1.4;
-            color: #1f2937;
+            color: var(--gray-800, #1f2937);
         }
-        .dark .fi-fo-pinpoint .pinpoint-search-item-text { color: #e5e7eb !important; }
+        .dark .fi-fo-pinpoint .pinpoint-search-item-text { color: var(--gray-200, #e5e7eb); }
 
         /* Use My Location Button */
-        .pinpoint-location-btn {
+        .fi-fo-pinpoint .pinpoint-location-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -640,23 +656,23 @@
             font-size: 0.875rem;
             font-weight: 600;
             line-height: 1.25rem;
-            color: #374151;
-            background-color: #ffffff;
-            border: 1px solid #d1d5db;
+            color: var(--gray-700, #374151);
+            background-color: white;
+            border: 1px solid var(--gray-300, #d1d5db);
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
         }
-        .pinpoint-location-btn:hover {
-            background-color: #f3f4f6;
-            border-color: #9ca3af;
-            color: #111827;
+        .fi-fo-pinpoint .pinpoint-location-btn:hover {
+            background-color: var(--gray-100, #f3f4f6);
+            border-color: var(--gray-400, #9ca3af);
+            color: var(--gray-900, #111827);
             box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
         }
-        .pinpoint-location-btn:active  { transform: scale(0.98); background-color: #e5e7eb; }
-        .pinpoint-location-btn:focus   { outline: 2px solid #6b7280; outline-offset: 2px; }
-        .dark .pinpoint-location-btn   { color: #e5e7eb; background-color: #374151; border-color: #4b5563; }
-        .dark .pinpoint-location-btn:hover { background-color: #4b5563; border-color: #6b7280; color: #f9fafb; }
+        .fi-fo-pinpoint .pinpoint-location-btn:active  { transform: scale(0.98); background-color: var(--gray-200, #e5e7eb); }
+        .fi-fo-pinpoint .pinpoint-location-btn:focus   { outline: 2px solid var(--gray-500, #6b7280); outline-offset: 2px; }
+        .dark .fi-fo-pinpoint .pinpoint-location-btn   { color: var(--gray-200, #e5e7eb); background-color: var(--gray-700, #374151); border-color: var(--gray-600, #4b5563); }
+        .dark .fi-fo-pinpoint .pinpoint-location-btn:hover { background-color: var(--gray-600, #4b5563); border-color: var(--gray-500, #6b7280); color: var(--gray-50, #f9fafb); }
     </style>
 </x-dynamic-component>

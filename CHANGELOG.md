@@ -16,6 +16,15 @@ All notable changes to `filament-pinpoint` will be documented in this file.
   - Search box, "Use My Location" button, and helper text are hidden when read-only
 - 🌐 **Spanish (es) translation** — Added Spanish localization for all UI strings (PR #17 by [@daljo25](https://github.com/daljo25))
 
+### Improved
+
+- 🎨 **Theme-compatible CSS** - Replaced all hardcoded CSS colors with Filament CSS variables (#20 by [@RibesAlexandre](https://github.com/RibesAlexandre))
+  - Search input, dropdown, button, and map border now use `var(--gray-*)` and `var(--primary-*)` instead of hardcoded hex values
+  - Plugin automatically adapts to custom Filament themes and color palettes (e.g., Slate, Zinc, custom primary colors)
+  - Radius circle color now follows the configured primary theme color
+  - Replaced non-compiling Tailwind utility classes with theme-aware CSS classes
+  - Removed all `!important` overrides from dark mode styles
+
 ## v1.1.7 - 2026-05-04
 
 ### Fixed

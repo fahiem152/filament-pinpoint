@@ -208,7 +208,7 @@ Pinpoint::make('location')
     ->searchable(false) // Hide search box
 ```
 
-### Read-Only Mode (New in v1.2.0)
+### Read-Only Mode (New in v1.1.8)
 
 Make the map display-only while keeping it visible in your form. The map remains pannable and zoomable for viewing, but all editing interactions are disabled.
 
